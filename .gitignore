@@ -1,0 +1,32 @@
+# Dependencies
+**/node_modules/
+
+# Frontend
+frontend/.next/
+frontend/out/
+
+# Backend
+backend/dist/
+backend/build/
+
+# Environment
+**/.env
+**/.env.*
+!**/.env.example
+
+# Logs
+**/*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+**/*.tsbuildinfo
+
+# Coverage
+**/coverage/

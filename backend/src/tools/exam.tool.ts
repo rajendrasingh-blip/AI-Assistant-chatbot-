@@ -1,0 +1,1 @@
+export const exam = () => "20 august 2026";
