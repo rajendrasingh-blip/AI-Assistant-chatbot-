@@ -25,7 +25,6 @@ export async function grokGenerateContent(
 ) {
   try {
     const conversation = [systemPrompt, messages];
-    console.log(messages, 'messages')
     const response = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: conversation as any,

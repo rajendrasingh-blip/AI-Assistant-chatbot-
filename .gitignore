@@ -1,9 +1,9 @@
 # Dependencies
 **/node_modules/
 
-# Frontend
-frontend/.next/
-frontend/out/
+# Frontend (UI)
+ui/.next/
+ui/out/
 
 # Backend
 backend/dist/

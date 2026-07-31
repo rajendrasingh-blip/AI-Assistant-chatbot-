@@ -2,7 +2,7 @@ import { Message } from "@/Message";
 
 export const fetchGeminiChat = async (query: Message, collegeCode: string, projectId: string) => {
     try {
-        const response = await fetch("http://localhost:5000/api/chat", {
+        const response = await fetch("https://chatbot.pseb.ac.in/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
