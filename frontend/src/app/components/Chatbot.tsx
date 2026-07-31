@@ -57,14 +57,17 @@ function ChatbotContent(props: ChatbotProps) {
                 content: question.trim(),
             },
         ];
-
+        const currentQuery = {
+            role: "user",
+            content: question.trim(),
+        }
         setMessages(updatedMessages);
         setQuestion("");
         setLoading(true);
 
         try {
             const answer = await fetchGeminiChat(
-                updatedMessages,
+                currentQuery,
                 collegeCode,
                 projectId
             );

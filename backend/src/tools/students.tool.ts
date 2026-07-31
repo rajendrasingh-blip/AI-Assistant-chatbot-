@@ -37,11 +37,57 @@ export async function getStudentCount(body: StudentRequest) {
         };
     }
 
-    // Sirf raw data return karo
-    return {
-        success: true,
-        type: body.Type,
-        classId: body.Class,
-        studentCount: response.data.StudentCount
-    };
+    const count = response.data.StudentCount;
+
+    switch (body.Type) {
+
+        case "1":
+            return {
+                success: true,
+                message:
+                    `Total Students: ${count}`
+            };
+
+        case "2":
+            return {
+                success: true,
+                message:
+                    `Class ${body.Class} - Total Students: ${count}`
+            };
+
+        case "3":
+            return {
+                success: true,
+                message:
+                    `Fee Paid Students: ${count}`
+            };
+
+        case "4":
+            return {
+                success: true,
+                message:
+                    `Class ${body.Class} - Fee Paid Students: ${count}`
+            };
+
+        case "5":
+            return {
+                success: true,
+                message:
+                    `Fee Unpaid Students: ${count}`
+            };
+
+        case "6":
+            return {
+                success: true,
+                message:
+                    `Class ${body.Class} - Fee Unpaid Students: ${count}`
+            };
+
+        default:
+            return {
+                success: false,
+                message: "Invalid request."
+            };
+    }
+
 }

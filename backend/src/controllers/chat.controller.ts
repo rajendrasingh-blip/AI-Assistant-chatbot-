@@ -3,19 +3,29 @@ import type { Request, Response } from "express";
 
 export const geminiAiChat = async (req: Request, res: Response) => {
     try {
-        const { query,
-            //  projectId,
-            collegeCode } = req.body;
+        const { query, collegeCode } = req.body;
+
         const chatres = await grokGenerateContent(query, collegeCode);
+
         if (!chatres) {
-            res.status(404).json({ success: false, message: "not found gemini response" });
-
+            return res.status(404).json({
+                success: false,
+                message: "No response generated."
+            });
         }
-        res.status(200).json({ success: true, message: "generate gemini response successfully.", data: chatres });
 
+        return res.status(200).json({
+            success: chatres.success,
+            message: "Response generated successfully.",
+            data: chatres.message
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to generate response."
+        });
     }
-    catch (error) {
-        console.log("failed to generate response.", error);
-        res.status(500).json({ success: false, message: "failed to generate response." });
-    }
-}
+};

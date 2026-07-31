@@ -48,13 +48,47 @@ export async function getCollegeDetails(
     );
 
     if (!response) {
-        return "No college details record was found.";
+        return {
+            success: false,
+            message: "No college details record was found."
+        };
     }
 
     if (response.status !== 1 || !response.data) {
-        return response.message ||
-            "No college details record was found.";
+        return {
+            success: false,
+            message: response.message || "No college details record was found."
+        };
     }
 
-    return response.data;
+    const data = response.data;
+
+    return {
+        success: true,
+        message: `# School Details
+
+**School Name:** ${data.SchlNme}
+
+**School Code:** ${data.Schl}
+
+**UDISE Code:** ${data.UDISECode}
+
+**District:** ${data.DistNm}
+
+**Area:** ${data.Area}
+
+**Class:** ${data.Class}
+
+**User Type:** ${data.UserType}
+
+## Facilities
+
+- Middle: ${data.Middle}
+- Matric: ${data.Matric}
+- Humanities: ${data.Hum}
+- Science: ${data.Sci}
+- Commerce: ${data.Comm}
+- Vocational: ${data.Voc}
+`
+    };
 }

@@ -1,6 +1,6 @@
 import { Message } from "@/Message";
 
-export const fetchGeminiChat = async (query: Message[], collegeCode: string, projectId: string) => {
+export const fetchGeminiChat = async (query: Message, collegeCode: string, projectId: string) => {
     try {
         const response = await fetch("http://localhost:5000/api/chat", {
             method: "POST",
