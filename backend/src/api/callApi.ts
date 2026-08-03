@@ -2,7 +2,8 @@ export async function callApi<TBody, TResponse>(
   url: string,
   body: TBody
 ): Promise<TResponse> {
-  const response = await fetch(url, {
+  const finalURL = `https://testreg2026.pseb.ac.in/api/${url}`
+  const response = await fetch(finalURL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

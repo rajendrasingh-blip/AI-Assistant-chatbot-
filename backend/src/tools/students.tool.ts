@@ -3,7 +3,13 @@ import { callApi } from "../api/callApi";
 interface StudentRequest {
     SchlCode: string;
     Class: string | null;
-    Type: string;
+    Type: string
+}
+
+interface StudentDetailsType {
+    SchlCode: string;
+    Class: string;
+    Form: string | null;
 }
 
 interface StudentResponse {
@@ -19,7 +25,7 @@ interface StudentResponse {
 
 export async function getStudentCount(body: StudentRequest) {
     const response = await callApi<StudentRequest, StudentResponse>(
-        "https://testreg2026.pseb.ac.in/api/ChatBoatApi/GetStudentClassDetails",
+        "ChatBoatApi/GetStudentClassDetails",
         body
     );
 
@@ -90,4 +96,34 @@ export async function getStudentCount(body: StudentRequest) {
             };
     }
 
+}
+
+export async function getStudentDetails(body: StudentDetailsType) {
+    const response = await callApi<StudentDetailsType, any>(
+        "ChatBoatApi/GetStudentDetails",
+        body
+    );
+
+    if (!response || !response.status || !response.data?.length) {
+        return {
+            success: false,
+            message: response?.message || "No student record was found."
+        };
+    }
+
+    const student = response.data[0];
+
+    const message = Object.entries(student)
+        .filter(([_, value]) =>
+            value !== null &&
+            value !== undefined &&
+            value !== ""
+        )
+        .map(([key, value]) => `${key} : ${value}`)
+        .join("\n");
+
+    return {
+        success: true,
+        message
+    };
 }

@@ -58,6 +58,64 @@ Extract only class number like 8,10,11,12.
   }
 };
 
+export const studentDetailsToolFN = {
+  type: "function" as const,
+  function: {
+    name: "get_student_details",
+    description: `
+Use this tool whenever the user asks for student details.
+
+Rules:
+
+- Class number is ALWAYS required.
+- If the user does not mention a class, do NOT call this tool.
+- Instead, ask the user to provide the class number.
+
+Form Type Rules:
+
+- Form Type is optional.
+- If the user mentions M1, use FormType = "M1".
+- If the user mentions M2, use FormType = "M2".
+- If no form type is mentioned, do not send FormType.
+
+Examples:
+
+"Show Class 8 students"
+→
+classId = "8"
+
+"Show Class 8 M1 students"
+→
+classId = "8"
+FormType = "M1"
+
+"Show Class 10 M2 students"
+→
+classId = "10"
+FormType = "M2"
+
+Always extract only the class number (8, 9, 10, 11, 12, etc.).
+Never guess the class number.
+`,
+
+    parameters: {
+      type: "object",
+      properties: {
+        classId: {
+          type: "string",
+          description: "Required. Class number only. Example: 8, 10, 11, 12."
+        },
+        formType: {
+          type: "string",
+          enum: ["M1", "M2"],
+          description: "Optional. Student Form Type (M1 or M2)."
+        }
+      },
+      required: ["classId"]
+    }
+  }
+};
+
 export const schoolToolFN = {
   type: "function" as const,
   function: {

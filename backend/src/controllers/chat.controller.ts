@@ -13,7 +13,7 @@ export const geminiAiChat = async (req: Request, res: Response) => {
                 message: "No response generated."
             });
         }
-
+        
         return res.status(200).json({
             success: chatres.success,
             message: "Response generated successfully.",

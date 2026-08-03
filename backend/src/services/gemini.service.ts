@@ -1,9 +1,10 @@
 // import { GoogleGenAI } from "@google/genai";
 import Groq from "groq-sdk";
-import { getStudentCount } from "../tools/students.tool";
+import { getStudentCount, getStudentDetails } from "../tools/students.tool";
 import { getCollegeDetails } from "../tools/school.tool";
 import {
   schoolToolFN,
+  studentDetailsToolFN,
   studentToolFN,
 } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
@@ -28,7 +29,7 @@ export async function grokGenerateContent(
     const response = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: conversation as any,
-      tools: [studentToolFN, schoolToolFN],
+      tools: [studentToolFN, studentDetailsToolFN, schoolToolFN],
       tool_choice: "auto",
     });
 
@@ -57,7 +58,7 @@ export async function grokGenerateContent(
 
     const functionName = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments || "{}");
-
+    console.log(functionName, args, 'functionName,args')
     switch (functionName) {
       case "get_student_count": {
         const type = Number(args.type);
@@ -76,6 +77,18 @@ export async function grokGenerateContent(
           Type: String(type),
         });
       }
+
+      case "get_student_details": {
+        const classId = args.classId || null;
+        const formType = args.formType  || null;
+
+        return await getStudentDetails({
+          SchlCode: collegeCode,
+          Class: classId,
+          Form: formType
+        });
+      }
+
 
       case "get_college_details": {
         return await getCollegeDetails({

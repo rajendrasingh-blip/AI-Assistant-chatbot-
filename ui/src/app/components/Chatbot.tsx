@@ -41,6 +41,15 @@ function ChatbotContent(props: ChatbotProps) {
         scrollToBottom();
     }, [messages, loading, isOpen]);
 
+    useEffect(() => {
+        window.parent.postMessage(
+            {
+                type: isOpen ? "CHATBOT_OPEN" : "CHATBOT_CLOSE",
+            },
+            "*"
+        );
+    }, [isOpen]);
+
     const handleSendQuestion = async () => {
         if (!question.trim() || loading) return;
 

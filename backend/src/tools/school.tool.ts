@@ -43,7 +43,7 @@ export async function getCollegeDetails(
         CollegeRequest,
         CollegeResponse
     >(
-        "https://testreg2026.pseb.ac.in/api/ChatBoatApi/GetChatBotDetails",
+        "ChatBoatApi/GetChatBotDetails",
         body
     );
 
