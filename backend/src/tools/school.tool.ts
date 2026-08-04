@@ -50,14 +50,14 @@ export async function getCollegeDetails(
     if (!response) {
         return {
             success: false,
-            message: "No college details record was found."
+            message: "No school details found."
         };
     }
 
     if (response.status !== 1 || !response.data) {
         return {
             success: false,
-            message: response.message || "No college details record was found."
+            message: response.message || "No school details found."
         };
     }
 
@@ -67,28 +67,26 @@ export async function getCollegeDetails(
         success: true,
         message: `# School Details
 
-**School Name:** ${data.SchlNme}
-
-**School Code:** ${data.Schl}
-
-**UDISE Code:** ${data.UDISECode}
-
-**District:** ${data.DistNm}
-
-**Area:** ${data.Area}
-
-**Class:** ${data.Class}
-
-**User Type:** ${data.UserType}
+| Field | Value |
+|-------|-------|
+| School Name | ${data.SchlNme || "N/A"} |
+| School Code | ${data.Schl || "N/A"} |
+| UDISE Code | ${data.UDISECode || "N/A"} |
+| District | ${data.DistNm || "N/A"} |
+| Area | ${data.Area || "N/A"} |
+| Class | ${data.Class || "N/A"} |
+| User Type | ${data.UserType || "N/A"} |
 
 ## Facilities
 
-- Middle: ${data.Middle}
-- Matric: ${data.Matric}
-- Humanities: ${data.Hum}
-- Science: ${data.Sci}
-- Commerce: ${data.Comm}
-- Vocational: ${data.Voc}
+| Facility | Value |
+|----------|-------|
+| Middle | ${data.Middle || "N/A"} |
+| Matric | ${data.Matric || "N/A"} |
+| Humanities | ${data.Hum || "N/A"} |
+| Science | ${data.Sci || "N/A"} |
+| Commerce | ${data.Comm || "N/A"} |
+| Vocational | ${data.Voc || "N/A"} |
 `
     };
 }

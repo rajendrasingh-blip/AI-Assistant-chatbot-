@@ -1,9 +1,13 @@
 # Dependencies
 **/node_modules/
 
-# Frontend (UI)
+frontend/
+
+id_ed25519
+id_ed25519.pub
+
 ui/.next/
-ui/out/
+ui/node_modules/
 
 # Backend
 backend/dist/

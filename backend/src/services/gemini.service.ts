@@ -1,10 +1,8 @@
-// import { GoogleGenAI } from "@google/genai";
 import Groq from "groq-sdk";
-import { getStudentCount, getStudentDetails } from "../tools/students.tool";
+import { getStudent } from "../tools/students.tool";
 import { getCollegeDetails } from "../tools/school.tool";
 import {
   schoolToolFN,
-  studentDetailsToolFN,
   studentToolFN,
 } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
@@ -26,10 +24,11 @@ export async function grokGenerateContent(
 ) {
   try {
     const conversation = [systemPrompt, messages];
+
     const response = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: conversation as any,
-      tools: [studentToolFN, studentDetailsToolFN, schoolToolFN],
+      tools: [studentToolFN, schoolToolFN],
       tool_choice: "auto",
     });
 
@@ -55,42 +54,37 @@ export async function grokGenerateContent(
     }
 
     const toolCall = assistantMessage.tool_calls[0];
-
     const functionName = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments || "{}");
-    console.log(functionName, args, 'functionName,args')
+    console.log(args, 'args',toolCall,'toolCall')
     switch (functionName) {
-      case "get_student_count": {
-        const type = Number(args.type);
-        const classId = args.classId || null;
 
-        if ([2, 4, 6].includes(type) && !classId) {
+      case "get_student": {
+
+        const type = Number(args.type);
+        const classId = args.classId ?? null;
+        const formType = args.formType ?? null;
+
+        // Types where class is mandatory
+        const classRequiredTypes = [2, 4, 6, 8, 10, 12];
+
+        if (classRequiredTypes.includes(type) && !classId) {
           return {
             success: false,
             message: "Please provide the class number.",
           };
         }
 
-        return await getStudentCount({
+        return await getStudent({
           SchlCode: collegeCode,
           Class: classId,
           Type: String(type),
+          Form: formType,
         });
       }
-
-      case "get_student_details": {
-        const classId = args.classId || null;
-        const formType = args.formType  || null;
-
-        return await getStudentDetails({
-          SchlCode: collegeCode,
-          Class: classId,
-          Form: formType
-        });
-      }
-
 
       case "get_college_details": {
+
         return await getCollegeDetails({
           SchlCode: collegeCode,
         });
@@ -99,9 +93,10 @@ export async function grokGenerateContent(
       default:
         return {
           success: false,
-          message: `Unsupported tool : ${functionName}`,
+          message: `Unsupported tool: ${functionName}`,
         };
     }
+
   } catch (error) {
     console.error(error);
 

@@ -2,33 +2,27 @@ import { callApi } from "../api/callApi";
 
 interface StudentRequest {
     SchlCode: string;
+    Type: string;
     Class: string | null;
-    Type: string
-}
-
-interface StudentDetailsType {
-    SchlCode: string;
-    Class: string;
     Form: string | null;
 }
 
 interface StudentResponse {
     status: string;
     message: string;
-    data: {
-        StudentCount: number;
-    } | null;
+    data: any;
     error?: {
         details: string;
     };
 }
 
-export async function getStudentCount(body: StudentRequest) {
+export async function getStudent(body: StudentRequest) {
+
     const response = await callApi<StudentRequest, StudentResponse>(
         "ChatBoatApi/GetStudentClassDetails",
         body
     );
-
+    console.log(response, 'response', body, 'body')
     if (!response) {
         return {
             success: false,
@@ -43,87 +37,84 @@ export async function getStudentCount(body: StudentRequest) {
         };
     }
 
-    const count = response.data.StudentCount;
+    // -----------------------
+    // Count (Type 1 - 6)
+    // -----------------------
 
-    switch (body.Type) {
+    if (["1", "2", "3", "4", "5", "6"].includes(body.Type)) {
 
-        case "1":
-            return {
-                success: true,
-                message:
-                    `Total Students: ${count}`
-            };
+        const count = response.data.StudentCount;
 
-        case "2":
-            return {
-                success: true,
-                message:
-                    `Class ${body.Class} - Total Students: ${count}`
-            };
+        switch (body.Type) {
 
-        case "3":
-            return {
-                success: true,
-                message:
-                    `Fee Paid Students: ${count}`
-            };
+            case "1":
+                return {
+                    success: true,
+                    message: `Total Students: ${count}`
+                };
 
-        case "4":
-            return {
-                success: true,
-                message:
-                    `Class ${body.Class} - Fee Paid Students: ${count}`
-            };
+            case "2":
+                return {
+                    success: true,
+                    message: `Class ${body.Class} - Total Students: ${count}`
+                };
 
-        case "5":
-            return {
-                success: true,
-                message:
-                    `Fee Unpaid Students: ${count}`
-            };
+            case "3":
+                return {
+                    success: true,
+                    message: `Fee Paid Students: ${count}`
+                };
 
-        case "6":
-            return {
-                success: true,
-                message:
-                    `Class ${body.Class} - Fee Unpaid Students: ${count}`
-            };
+            case "4":
+                return {
+                    success: true,
+                    message: `Class ${body.Class} - Fee Paid Students: ${count}`
+                };
 
-        default:
-            return {
-                success: false,
-                message: "Invalid request."
-            };
+            case "5":
+                return {
+                    success: true,
+                    message: `Fee Unpaid Students: ${count}`
+                };
+
+            case "6":
+                return {
+                    success: true,
+                    message: `Class ${body.Class} - Fee Unpaid Students: ${count}`
+                };
+        }
     }
 
-}
+    // -----------------------
+    // List (Type 7 - 12)
+    // -----------------------
 
-export async function getStudentDetails(body: StudentDetailsType) {
-    const response = await callApi<StudentDetailsType, any>(
-        "ChatBoatApi/GetStudentDetails",
-        body
-    );
+    if (["7", "8", "9", "10", "11", "12"].includes(body.Type)) {
+        const students = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
 
-    if (!response || !response.status || !response.data?.length) {
+        const allowedKeys = ["Candi_Name", "PreSchlState", "UDISECODE"];
+
+        const message = students
+            .map((student: any, index: number) => {
+                const details = allowedKeys
+                    .filter((key) => student[key] !== null && student[key] !== undefined && student[key] !== "")
+                    .map((key) => student[key])
+                    .join(" | ");
+
+                return ` ${index + 1}. ${details}`;
+            })
+            .join("\n");
+
         return {
-            success: false,
-            message: response?.message || "No student record was found."
+            success: true,
+            message
         };
     }
 
-    const student = response.data[0];
-
-    const message = Object.entries(student)
-        .filter(([_, value]) =>
-            value !== null &&
-            value !== undefined &&
-            value !== ""
-        )
-        .map(([key, value]) => `${key} : ${value}`)
-        .join("\n");
-
     return {
-        success: true,
-        message
+        success: false,
+        message: "Invalid request."
     };
 }
