@@ -116,6 +116,10 @@ function ChatbotContent(props: Props) {
                         className="group flex h-[72px] w-[72px] items-center justify-center bg-transparent transition-all duration-300 hover:-translate-y-1 active:scale-95 cursor-pointer"
                     >
                         <div className="ai-bot">
+                            <div className="help-bubble">
+                                Need Help?
+                            </div>
+
                             <div className="bot-head">
                                 <div className="bot-eye left">
                                     <span></span>
@@ -127,9 +131,7 @@ function ChatbotContent(props: Props) {
 
                                 <div className="bot-mouth"></div>
                             </div>
-                            <div className="help-bubble">
-                                Need Help?
-                            </div>
+
                             <div className="bot-body">
                                 <div className="bot-arm left"></div>
                                 <div className="bot-arm right"></div>
