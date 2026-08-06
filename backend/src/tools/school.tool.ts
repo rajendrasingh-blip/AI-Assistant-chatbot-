@@ -46,7 +46,7 @@ export async function getCollegeDetails(
         "ChatBoatApi/GetChatBotDetails",
         body
     );
-
+    
     if (!response) {
         return {
             success: false,
@@ -54,7 +54,7 @@ export async function getCollegeDetails(
         };
     }
 
-    if (response.status !== 1 || !response.data) {
+    if (response.status !== 200 || !response.data) {
         return {
             success: false,
             message: response.message || "No school details found."

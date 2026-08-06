@@ -56,7 +56,6 @@ export async function grokGenerateContent(
     const toolCall = assistantMessage.tool_calls[0];
     const functionName = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments || "{}");
-    console.log(args, 'args',toolCall,'toolCall')
     switch (functionName) {
 
       case "get_student": {
@@ -64,6 +63,8 @@ export async function grokGenerateContent(
         const type = Number(args.type);
         const classId = args.classId ?? null;
         const formType = args.formType ?? null;
+        const fields = args.fields ?? null;
+
 
         // Types where class is mandatory
         const classRequiredTypes = [2, 4, 6, 8, 10, 12];
@@ -80,6 +81,7 @@ export async function grokGenerateContent(
           Class: classId,
           Type: String(type),
           Form: formType,
+          fields
         });
       }
 

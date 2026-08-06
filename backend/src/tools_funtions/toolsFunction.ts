@@ -161,6 +161,46 @@ classId: ""
 Omit optional fields completely if unavailable.
 
 Never guess class number or form type.
+
+=========================
+FIELD RULES
+=========================
+
+If the user requests a student list and mentions specific fields,
+extract those fields into the "fields" parameter.
+
+Examples
+
+"student name and father name"
+
+fields:
+[
+"Candi_Name",
+"Father_Name"
+]
+
+"name mobile"
+
+fields:
+[
+"Candi_Name",
+"Mobile"
+]
+
+"name, father name, udise"
+
+fields:
+[
+"Candi_Name",
+"Father_Name",
+"UDISECODE"
+]
+
+If the user does not mention any fields,
+do not send the fields parameter.
+
+Never guess fields.
+Only include fields explicitly requested.
 `,
 
     parameters: {
@@ -182,6 +222,47 @@ Never guess class number or form type.
             "M1", "M2",
             "T1", "T2"],
           description: "Optional. Student Form Type."
+        },
+        fields: {
+          type: "array",
+          description:
+            "Optional. Student fields requested by the user. Omit if not specified.",
+          items: {
+            type: "string",
+            enum: [
+              "Registration_num",
+              "Candi_Name",
+              "Father_Name",
+              "Mother_Name",
+              "DOB",
+              "Gender",
+              "Religion",
+              "Caste",
+              "Category",
+              "CLASS",
+              "Section",
+              "Group_Name",
+              "SCHL",
+              "UDISECODE",
+              "Prev_School_Name",
+              "PreSchlState",
+              "SESSION",
+              "SubjectList",
+              "CandStudyMedium",
+              "Admission_Date",
+              "Mobile",
+              "Mother_Mobile",
+              "Address",
+              "District",
+              "PinCode",
+              "Differently_Abled",
+              "Belongs_BPL",
+              "wantwriter",
+              "IsStudentRegistered",
+              "StudentVerificationFlag",
+              "challanVerify"
+            ]
+          }
         }
       },
       required: ["type"]

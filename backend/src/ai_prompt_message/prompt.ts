@@ -30,6 +30,16 @@ Student Rules
 
 - Otherwise answer for the whole school.
 
+
+Student List Rules
+
+If the user requests a student list and explicitly mentions which fields they want, include only those field names in the function call.
+
+Do not guess fields.
+
+If no fields are mentioned, omit the fields parameter.
+
+
 Form Type Rules
 
 Form Type is optional.

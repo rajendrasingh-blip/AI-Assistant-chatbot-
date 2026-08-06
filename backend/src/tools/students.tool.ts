@@ -5,6 +5,7 @@ interface StudentRequest {
     Type: string;
     Class: string | null;
     Form: string | null;
+    fields: []
 }
 
 interface StudentResponse {
@@ -94,22 +95,47 @@ export async function getStudent(body: StudentRequest) {
             ? response.data
             : [response.data];
 
-        const allowedKeys = ["Candi_Name", "PreSchlState", "UDISECODE"];
+        const allowedKeys =
+            body.fields && body.fields.length > 0
+                ? body.fields
+                : [
+                    "Candi_Name",
+                    "Father_Name",
+                    "CLASS",
+                ];
 
-        const message = students
+        const fieldLabels: Record<string, string> = {
+            Candi_Name: "Student Name",
+            Father_Name: "Father Name",
+            Mother_Name: "Mother Name",
+            UDISECODE: "UDISE Code",
+            Registration_num: "Registration No",
+            CLASS: "Class",
+            Mobile: "Mobile",
+            Gender: "Gender",
+            DOB: "DOB",
+            PreSchlState: "State",
+        };
+
+        const header = [
+            "**#**",
+            ...allowedKeys.map((key) => `**${fieldLabels[key] || key}**`),
+        ].join(" | ");
+
+        const rows = students
             .map((student: any, index: number) => {
-                const details = allowedKeys
-                    .filter((key) => student[key] !== null && student[key] !== undefined && student[key] !== "")
-                    .map((key) => student[key])
-                    .join(" | ");
-
-                return ` ${index + 1}. ${details}`;
+                return [
+                    index + 1,
+                    ...allowedKeys.map((key) => student[key] ?? ""),
+                ].join(" | ");
             })
-            .join("\n");
+            .join("\n\n");
+
+        const message = `${header}\n\n${rows}`;
 
         return {
             success: true,
-            message
+            message,
         };
     }
 

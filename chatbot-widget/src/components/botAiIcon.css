@@ -7,28 +7,27 @@
     align-items: center;
 }
 
-.ai-bot::before{
+.ai-bot::before {
 
-content:"";
+    content: "";
 
-position:absolute;
+    position: absolute;
 
-width:52px;
-height:52px;
+    width: 82px;
+    height: 82px;
 
-border-radius:50%;
+    border-radius: 50%;
 
-background:
+    background:
+        radial-gradient(circle,
+            rgba(51, 109, 192, .45),
+            transparent 70%);
 
-radial-gradient(circle,
-rgba(80,150,255,.25),
-transparent 70%);
+    filter: blur(22px);
 
-filter:blur(12px);
+    animation: botGlow 2.5s infinite;
 
-animation:botGlow 2.5s infinite;
-
-z-index:-1;
+    z-index: -1;
 
 }
 
@@ -56,17 +55,16 @@ z-index:-1;
 
     border-radius: 50%;
 
-    background:
-        radial-gradient(circle at 30% 25%,
-            #7ec7ff 0%,
-            #5b9cff 35%,
-            #3979dc 70%,
-            #28598f 100%);
+    background: linear-gradient(180deg,
+            #5f96e2 0%,
+            #4a82d0 35%,
+            #336DC0 70%,
+            #2b5da5 100%);
 
     box-shadow:
         inset 4px 4px 8px rgba(255, 255, 255, .25),
         inset -5px -5px 8px rgba(0, 0, 0, .18),
-        0 10px 20px rgba(40, 89, 143, .35);
+        0 10px 18px rgba(45, 103, 178, .28);
 
     animation: floatBot 2.5s ease-in-out infinite;
 }
@@ -98,18 +96,19 @@ z-index:-1;
 
     position: absolute;
 
-    left: 50%;
-    top: -8px;
+    top: 5px;
+    left: 7px;
 
-    transform: translateX(-50%);
-
-    width: 3px;
+    width: 18px;
     height: 9px;
 
-    background: white;
+    border-radius: 50%;
 
-    border-radius: 4px;
+    background: rgba(255, 255, 255, .35);
 
+    filter: blur(1px);
+
+    transform: rotate(-20deg);
 }
 
 .bot-head::after {
@@ -128,11 +127,11 @@ z-index:-1;
 
     border-radius: 50%;
 
-    background: #89d0ff;
+    background: #7EA7E8;
 
     box-shadow:
-        0 0 8px #7fc6ff,
-        0 0 18px rgba(120, 180, 255, .5);
+        0 0 8px #7EA7E8,
+        0 0 18px rgba(51, 109, 192, .45);
 
     animation: antennaGlow 1.5s infinite;
 
@@ -159,17 +158,19 @@ z-index:-1;
     white-space: nowrap;
 
     background: #fff;
-    color: #28598f;
+    color: #2d67b2;
+    font-weight: 500;
 
     padding: 8px 14px;
 
     border-radius: 22px;
 
     font-size: 12px;
-    font-weight: 400;
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+    box-shadow:
+        0 10px 24px rgba(51, 109, 192, .20);
 
+    transition: .25s;
     animation:
         bubbleFloat 2.5s infinite,
         bubblePulse 2.5s infinite;
@@ -200,8 +201,9 @@ z-index:-1;
     width: 24px;
     height: 18px;
 
-    background:
-        linear-gradient(#66a9ff, #2b6ed6);
+    background: linear-gradient(180deg,
+            #5b92dd,
+            #336DC0);
 
     border-radius: 0 0 12px 12px;
 
@@ -235,73 +237,73 @@ z-index:-1;
 
 }
 
-.bot-eye{
+.bot-eye {
 
-position:absolute;
+    position: absolute;
 
-top:15px;
+    top: 15px;
 
-width:6px;
-height:6px;
+    width: 6px;
+    height: 6px;
 
-background:white;
+    background: white;
 
-border-radius:50%;
+    border-radius: 50%;
 
-box-shadow:
-0 0 5px rgba(255,255,255,.8);
+    box-shadow:
+        0 0 5px rgba(255, 255, 255, .8);
 
-animation:blink 4s infinite;
-
-}
-
-.bot-eye.left{
-
-left:11px;
+    animation: blink 4s infinite;
 
 }
 
-.bot-eye.right{
+.bot-eye.left {
 
-right:11px;
-
-}
-
-.bot-eye span{
-
-display:block;
-
-width:2px;
-height:2px;
-
-margin:2px;
-
-background:#18324d;
-
-border-radius:50%;
-
-animation:eyeMove 4s infinite;
+    left: 11px;
 
 }
 
-.bot-mouth{
+.bot-eye.right {
 
-position:absolute;
+    right: 11px;
 
-left:50%;
+}
 
-bottom:8px;
+.bot-eye span {
 
-transform:translateX(-50%);
+    display: block;
 
-width:12px;
-height:6px;
+    width: 2px;
+    height: 2px;
 
-border-bottom:2px solid white;
+    margin: 2px;
 
-border-radius:0 0 20px 20px;
+    background: #18324d;
 
-animation:smileMove 3s infinite;
+    border-radius: 50%;
+
+    animation: eyeMove 4s infinite;
+
+}
+
+.bot-mouth {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 8px;
+
+    transform: translateX(-50%);
+
+    width: 12px;
+    height: 6px;
+
+    border-bottom: 2px solid white;
+
+    border-radius: 0 0 20px 20px;
+
+    animation: smileMove 3s infinite;
 
 }
 
@@ -361,7 +363,7 @@ animation:smileMove 3s infinite;
     width: 4px;
     height: 14px;
 
-    background: #4f8ef9;
+    background: #336DC0;
 
     border-radius: 20px;
 
@@ -422,7 +424,7 @@ animation:smileMove 3s infinite;
     width: 3px;
     height: 8px;
 
-    background: #28598f;
+    background: #336DC0;
 
     border-radius: 10px;
 

@@ -9,18 +9,21 @@ declare global {
 
 if (!window.PSEBChatbotLoaded) {
   window.PSEBChatbotLoaded = true;
-  let projectId = "olympiad";
-  let collegeCode = "999999";
+
   const script = document.currentScript as HTMLScriptElement | null;
 
   if (script) {
-    projectId = script.dataset.projectId || projectId;
-    collegeCode = script.dataset.collegeCode || collegeCode;
+    const projectId = script.dataset.projectId || "";
+    const collegeCode = script.dataset.collegeCode || "";
 
     initChatbot({
       projectId,
       collegeCode,
     });
   }
+  // initChatbot({
+  //   projectId: "olympiad",
+  //   collegeCode: "9999999",
+  // });
 }
 

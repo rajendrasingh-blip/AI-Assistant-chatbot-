@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import App from "../App";
 import widgetCss from "../index.css?inline";
 import botCss from "../components/botAiIcon.css?inline";
+import chatbotCss from "../components/Chatbot.css?inline";
 
 declare global {
   interface Window {
@@ -74,6 +75,7 @@ export function initChatbot(config: ChatbotConfig) {
 
       ${widgetCss}
       ${botCss}
+      ${chatbotCss}
     `;
 
     shadowRoot.appendChild(styleTag);
