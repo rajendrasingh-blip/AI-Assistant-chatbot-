@@ -62,17 +62,25 @@ export async function grokGenerateContent(
     switch (functionName) {
 
       case "get_student": {
-
         const type = Number(args.type);
-        const classId = args.classId ?? null;
+
+        const classIdMap: Record<string, string> = {
+          "9": "1",
+          "10": "2",
+          "11": "3",
+          "12": "4",
+        };
+
+        const rawClassId = String(args.classId);
+        const classId = classIdMap[rawClassId] ?? null;
+
         const formType = args.formType ?? null;
         const fields = args.fields ?? null;
-
 
         // Types where class is mandatory
         const classRequiredTypes = [2, 4, 6, 8, 10, 12];
 
-        if (classRequiredTypes.includes(type) && !classId) {
+        if (classRequiredTypes.includes(type) && classId === null) {
           return {
             success: false,
             message: "Please provide the class number.",
@@ -84,7 +92,7 @@ export async function grokGenerateContent(
           Class: classId,
           Type: String(type),
           Form: formType,
-          fields
+          fields,
         });
       }
 
