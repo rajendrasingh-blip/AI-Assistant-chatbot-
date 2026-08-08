@@ -12,8 +12,66 @@ const groq = new Groq({
 });
 
 export async function pdfTool(query: string) {
-    const documents = pdfDocuments;
- 
+    const normalizedQuery = query.toLowerCase();
+
+    const selectedDocuments = pdfDocuments.filter((doc) =>
+        doc.keywords.some((keyword) =>
+            normalizedQuery.includes(keyword.toLowerCase())
+        )
+    );
+
+    const documents =
+        selectedDocuments.length > 0
+            ? selectedDocuments
+            : pdfDocuments;
+
+    const imageUrls = documents
+        .flatMap((doc) =>
+            doc.pages.map((page) => ({
+                pdfId: doc.pdfId,
+                title: doc.title,
+                imageUrl: page.imageUrl,
+            }))
+        )
+        .slice(0, 5);
+
+    console.log("QUERY:", query);
+    console.log("IMAGE URLS:", imageUrls, 'selectedDocuments', selectedDocuments);
+
+    const content: any[] = [
+        {
+            type: "text",
+            text: `
+Answer the user's question using ONLY the provided PSEB document images.
+
+User Query:
+${query}
+
+Important:
+- Carefully read the document images.
+- Documents may contain Punjabi, English, or both.
+- Understand Punjabi/Gurmukhi text.
+- Do not invent information.
+- If the answer is not present in the provided documents, say that it is not available.
+- Give ONLY the answer to the user's question.
+- Do not explain your reasoning.
+- Do not show your thinking process.
+- Keep the answer short and specific.
+- Reply in the same language as the user.
+      `,
+        },
+    ];
+
+    // Images LLM ko actual image input ke roop me bhejna
+    for (const image of imageUrls) {
+        content.push({
+            type: "image_url",
+            image_url: {
+                url: image.imageUrl,
+            },
+        });
+    }
+
     const response = await groq.chat.completions.create({
         model: "qwen/qwen3.6-27b",
 
@@ -21,46 +79,36 @@ export async function pdfTool(query: string) {
             {
                 role: "system",
                 content: `
-You are PSEB AI Assistant.
+You are a PSEB document assistant.
 
-Answer the user's question only from the
-provided PDF documents.
+Answer ONLY from the provided document images.
 
-Documents may contain Punjabi and English.
+Do not reveal your reasoning or thinking process.
+Return only the final answer.
 
-Do not invent or assume information.
+If the answer is not present in the documents,
+say that the information is not available.
 
-If the answer is not available in the documents,
-clearly say that the information is not available.
-
+Keep answers short, clear and specific.
 Reply in the same language as the user.
-Keep the answer short and professional.
-                `,
+        `,
             },
             {
                 role: "user",
-                content: `
-User Query:
-${query}
-
-PDF Documents:
-${JSON.stringify(documents)}
-                `,
+                content,
             },
         ],
+
+        // Thinking output ko hide karne ke liye
+        reasoning_format: "hidden",
+
+        temperature: 0.2,
+        max_completion_tokens: 500,
     });
-
-    let answer =
-        response.choices[0]?.message?.content || "";
-
-    answer = answer
-        .replace(/<think>[\s\S]*?<\/think>/gi, "")
-        .trim();
 
     return {
         success: true,
-        message:
-            answer,
+        message: response.choices[0]?.message?.content || "",
         data: documents.map((doc) => ({
             pdfId: doc.pdfId,
             title: doc.title,
