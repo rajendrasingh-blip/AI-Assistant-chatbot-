@@ -93,6 +93,7 @@ export async function grokGenerateContent(
           Type: String(type),
           Form: formType,
           fields,
+          rawClassId
         });
       }
 
