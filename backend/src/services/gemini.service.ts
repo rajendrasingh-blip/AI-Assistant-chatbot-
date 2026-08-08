@@ -80,7 +80,7 @@ export async function grokGenerateContent(
         // Types where class is mandatory
         const classRequiredTypes = [2, 4, 6, 8, 10, 12];
 
-        if (classRequiredTypes.includes(type) && classId === null) {
+        if (classRequiredTypes.includes(type) || classId ) {
           return {
             success: false,
             message: "Please provide the class number.",
