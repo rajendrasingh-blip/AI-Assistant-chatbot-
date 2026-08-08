@@ -108,14 +108,17 @@ export const pdfDocuments = [
 
         keywords: [
             "2026003",
-            "RTE",
-            "Right to Education",
-            "Right of Children to Free and Compulsory Education",
+            "rte",
+            "right to education",
+            "right of children to free and compulsory education",
             "free education",
             "compulsory education",
             "section 12",
             "12(1)(c)",
             "admission",
+            "concerned officers",
+            "branches",
+            "arrangements",
         ],
 
         pages: [
@@ -124,33 +127,30 @@ export const pdfDocuments = [
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-1.png",
             },
-
             {
                 page: 2,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-2.png",
             },
-             {
+            {
                 page: 3,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-3.png",
             },
-             {
+            {
                 page: 4,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-4.png",
             },
-             {
+            {
                 page: 5,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-5.png",
             },
-
-            // जितने pages हैं उतने यहां add करो
         ],
 
         content:
-            "ਬੱਚਿਆਂ ਦਾ ਮੁਫਤ ਅਤੇ ਲਾਜ਼ਮੀ ਸਿੱਖਿਆ ਦਾ ਅਧਿਕਾਰ ਐਕਟ, 2009 ਦੀ ਧਾਰਾ 12(1)(c) ਦੇ ਅਧੀਨ ਉਪਬੰਧਾਂ ਨੂੰ ਲਾਗੂ ਕਰਨ ਬਾਰੇ।",
+            "બાળકો ਦਾ ਮੁਫਤ ਅਤੇ ਲਾਜ਼ਮੀ ਸਿੱਖਿਆ...",
     },
 
     // NEW PDF
@@ -170,7 +170,11 @@ export const pdfDocuments = [
             "olympiad",
             "foundation",
             "important letter",
-            "important correspondence",
+            "important letter from the cyber olympiad foundation",
+            "confidential",
+            "international cyber olympiad",
+            "computer science",
+            "cyber security",
         ],
 
         pages: [
