@@ -89,7 +89,7 @@ say that the information is not available.
 
 Keep answers short, clear and specific.
 Reply in the same language as the user.
-        `,
+`,
             },
             {
                 role: "user",
@@ -97,14 +97,11 @@ Reply in the same language as the user.
             },
         ],
 
-        // Thinking output ko hide karne ke liye
-        reasoning_format: "hidden",
-
+        reasoning_effort: "none",
         temperature: 0.2,
         max_completion_tokens: 500,
     });
 
-    
     console.log(content, 'content', response.choices[0], 'response.choices[0]')
     return {
         success: true,
