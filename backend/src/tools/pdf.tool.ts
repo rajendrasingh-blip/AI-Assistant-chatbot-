@@ -35,8 +35,6 @@ export async function pdfTool(query: string) {
         )
         .slice(0, 3);
 
-    console.log("QUERY:", query);
-    console.log("IMAGE URLS:", imageUrls, 'selectedDocuments', selectedDocuments);
 
     const content: any[] = [
         {
@@ -106,6 +104,7 @@ Reply in the same language as the user.
         max_completion_tokens: 500,
     });
 
+    console.log(response, 'responsetest')
     return {
         success: true,
         message: response.choices[0]?.message?.content || "",
