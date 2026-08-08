@@ -14,11 +14,21 @@ const groq = new Groq({
 export async function pdfTool(query: string) {
     const normalizedQuery = query.toLowerCase();
 
-    const selectedDocuments = pdfDocuments.filter((doc) =>
-        doc.keywords.some((keyword) =>
-            normalizedQuery.includes(keyword.toLowerCase())
-        )
-    );
+    const selectedDocuments = pdfDocuments.filter((doc) => {
+        const searchableText = [
+            doc.pdfId,
+            doc.title,
+            ...doc.keywords,
+        ]
+            .join(" ")
+            .toLowerCase();
+
+        return searchableText
+            .split(/\s+/)
+            .some((word) =>
+                normalizedQuery.includes(word)
+            );
+    });
 
     const documents =
         selectedDocuments.length > 0
