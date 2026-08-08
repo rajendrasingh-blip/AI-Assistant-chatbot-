@@ -4,9 +4,11 @@ import { getCollegeDetails } from "../tools/school.tool";
 import {
   schoolToolFN,
   studentToolFN,
+  pdfToolFN
 } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
 import { systemPrompt } from "../ai_prompt_message/prompt";
+import { pdfTool } from "../tools/pdf.tool";
 
 const grokApiKey = process.env.GROK_API_KEY;
 
@@ -28,7 +30,7 @@ export async function grokGenerateContent(
     const response = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: conversation as any,
-      tools: [studentToolFN, schoolToolFN],
+      tools: [studentToolFN, schoolToolFN, pdfToolFN],
       tool_choice: "auto",
     });
 
@@ -56,6 +58,7 @@ export async function grokGenerateContent(
     const toolCall = assistantMessage.tool_calls[0];
     const functionName = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments || "{}");
+
     switch (functionName) {
 
       case "get_student": {
@@ -90,6 +93,20 @@ export async function grokGenerateContent(
         return await getCollegeDetails({
           SchlCode: collegeCode,
         });
+      }
+
+      case "pdfTool": {
+
+        const query = args.query;
+
+        if (!query) {
+          return {
+            success: false,
+            message: "Please provide a PDF related query.",
+          };
+        }
+
+        return await pdfTool(query);
       }
 
       default:

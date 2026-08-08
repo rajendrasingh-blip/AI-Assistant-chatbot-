@@ -270,6 +270,43 @@ Only include fields explicitly requested.
   }
 };
 
+export const pdfToolFN = {
+    type: "function",
+
+    function: {
+        name: "pdfTool",
+
+        description: `
+Use this tool whenever the user asks about information
+from PSEB circulars, notifications, orders, notices,
+guidelines or official instructions.
+
+IMPORTANT:
+If the user is asking about any PSEB rule, instruction,
+deadline, process, clarification, registration, staff details,
+declaration, eSign, admission, textbook, discount or similar
+official information that may be present in a PSEB PDF,
+you MUST use this tool.
+
+Do not answer such questions directly from your own knowledge.
+The answer must come from the PDF documents.
+        `,
+
+        parameters: {
+            type: "object",
+
+            properties: {
+                query: {
+                    type: "string",
+                    description:
+                        "The complete user's question that should be answered from PSEB PDF documents.",
+                },
+            },
+
+            required: ["query"],
+        },
+    },
+};
 
 export const schoolToolFN = {
   type: "function" as const,
