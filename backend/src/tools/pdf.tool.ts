@@ -33,7 +33,7 @@ export async function pdfTool(query: string) {
                 imageUrl: page.imageUrl,
             }))
         )
-        .slice(0, 5);
+        .slice(0, 3);
 
     console.log("QUERY:", query);
     console.log("IMAGE URLS:", imageUrls, 'selectedDocuments', selectedDocuments);
