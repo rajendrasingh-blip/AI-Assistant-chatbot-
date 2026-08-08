@@ -104,6 +104,7 @@ Reply in the same language as the user.
         max_completion_tokens: 500,
     });
 
+    
     console.log(content, 'content', response.choices[0], 'response.choices[0]')
     return {
         success: true,
