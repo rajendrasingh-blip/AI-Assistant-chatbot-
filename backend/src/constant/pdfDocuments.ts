@@ -96,7 +96,10 @@ export const pdfDocuments = [
             "For session 2026-27, schools have to complete registration/continuation of students online through the Unified Student Registration Portal. The last date mentioned is 15 July 2026. After 15 July 2026, registration/continuation of students will not be allowed in the Unified Student Registration Portal. Schools should complete the process within the prescribed time. Student data entered in the portal is to be e-signed and submitted as required.",
     },
 
-    // NEW PDF
+    // =========================================================
+    // 2026003 - ORIGINAL RTE CIRCULAR
+    // =========================================================
+
     {
         pdfId: "2026003",
 
@@ -114,11 +117,11 @@ export const pdfDocuments = [
             "free education",
             "compulsory education",
             "section 12",
+            "section 12(1)(c)",
             "12(1)(c)",
             "admission",
-            "concerned officers",
-            "branches",
-            "arrangements",
+            "rte act",
+            "right of children",
         ],
 
         pages: [
@@ -137,23 +140,16 @@ export const pdfDocuments = [
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026003/page-3.png",
             },
-            {
-                page: 4,
-                imageUrl:
-                    "https://chatbot.pseb.ac.in/pdf-images/2026003/page-4.png",
-            },
-            {
-                page: 5,
-                imageUrl:
-                    "https://chatbot.pseb.ac.in/pdf-images/2026003/page-5.png",
-            },
         ],
 
         content:
-            "બાળકો ਦਾ ਮੁਫਤ ਅਤੇ ਲਾਜ਼ਮੀ ਸਿੱਖਿਆ...",
+            "This circular concerns implementation of the provisions under Section 12(1)(c) of the Right of Children to Free and Compulsory Education Act, 2009.",
     },
 
-    // NEW PDF
+    // =========================================================
+    // 2026004 - CYBER OLYMPIAD FOUNDATION
+    // =========================================================
+
     {
         pdfId: "2026004",
 
@@ -183,35 +179,121 @@ export const pdfDocuments = [
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026004/page-1.png",
             },
-
             {
                 page: 2,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026004/page-2.png",
             },
-
             {
                 page: 3,
                 imageUrl:
                     "https://chatbot.pseb.ac.in/pdf-images/2026004/page-3.png",
             },
-
-            {
-                page: 4,
-                imageUrl:
-                    "https://chatbot.pseb.ac.in/pdf-images/2026004/page-4.png",
-            },
-
-            {
-                page: 5,
-                imageUrl:
-                    "https://chatbot.pseb.ac.in/pdf-images/2026004/page-5.png",
-            },
-
-            // बाकी pages
         ],
 
         content:
-            "ਸਾਈਬਰ ਓਲੰਪੀਅਡ ਫਾਉਂਡੇਸ਼ਨ ਵੱਲੋਂ ਪ੍ਰਾਪਤ ਮਹੱਤਵਪੂਰਨ ਪੱਤਰ।",
+            "This document concerns an important letter received from the Cyber Olympiad Foundation regarding the International Cyber Olympiad, including information about the competition, its objectives, computer science and cyber security awareness.",
+    },
+
+    // =========================================================
+    // 2026005 - PAGES MOVED FROM 2026004
+    // =========================================================
+
+    {
+        pdfId: "2026005",
+
+        title:
+            "Cyber Olympiad Foundation - Additional Pages / Important Letter",
+
+        // Actual PDF source is still 2026004
+        pdfUrl:
+            "https://psebdata.s3.ap-south-1.amazonaws.com/allfiles/Circular/2026004.pdf",
+
+        keywords: [
+            "2026005",
+            "cyber olympiad",
+            "cyber olympiad foundation",
+            "olympiad",
+            "foundation",
+            "important letter",
+            "international cyber olympiad",
+            "computer science",
+            "cyber security",
+            "competition",
+            "students",
+        ],
+
+        pages: [
+            {
+                page: 1,
+                imageUrl:
+                    "https://chatbot.pseb.ac.in/pdf-images/2026005/page-1.png",
+            },
+            {
+                page: 2,
+                imageUrl:
+                    "https://chatbot.pseb.ac.in/pdf-images/2026005/page-2.png",
+            },
+        ],
+
+        content:
+            "Additional pages from the Cyber Olympiad Foundation letter. The letter contains information regarding the International Cyber Olympiad, its objectives, student participation, computer science and cyber security awareness.",
+    },
+
+    // =========================================================
+    // 2026006 - PAGES MOVED FROM 2026003
+    // =========================================================
+
+    {
+        pdfId: "2026006",
+
+        title:
+            "Implementation Guidelines for Section 12(1)(C) of RTE Act, 2009",
+
+        // Actual PDF source is still 2026003
+        pdfUrl:
+            "https://psebdata.s3.ap-south-1.amazonaws.com/allfiles/Circular/2026003.pdf",
+
+        keywords: [
+            "2026006",
+            "rte",
+            "rte act",
+            "right to education",
+            "right of children to free and compulsory education",
+            "section 12",
+            "section 12(1)(c)",
+            "12(1)(c)",
+            "implementation",
+            "implementation guidelines",
+            "guidelines",
+            "concerned officers",
+            "concerned branches",
+            "officers",
+            "branches",
+            "strict compliance",
+            "compliance",
+            "necessary action",
+            "arrangements",
+            "effective implementation",
+            "government directions",
+            "school education",
+            "district education officers",
+        ],
+
+        pages: [
+            {
+                page: 1,
+                imageUrl:
+                    "https://chatbot.pseb.ac.in/pdf-images/2026006/page-1.png",
+            },
+            {
+                page: 2,
+                imageUrl:
+                    "https://chatbot.pseb.ac.in/pdf-images/2026006/page-2.png",
+            },
+        ],
+
+        content:
+            "All concerned officers and branches shall ensure strict compliance with the directions. The arrangements are issued to facilitate effective implementation of Section 12(1)(C) of the Right of Children to Free and Compulsory Education Act, 2009 and remain subject to further directions issued by the Government from time to time. The document is also forwarded to concerned officers and branches for information and necessary action.",
     },
 ];
