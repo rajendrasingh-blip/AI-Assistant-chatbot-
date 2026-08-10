@@ -60,7 +60,7 @@ Give a direct, concise response in simple English.`
 
     // 3. Call Groq with Vision Model
     const response = await groq.chat.completions.create({
-        model: "llama-3.2-11b-vision-preview", // Accurate Vision Model
+        model: "llama-3.2-90b-vision-preview", // Accurate Vision Model
         messages: [
             {
                 role: "user",
