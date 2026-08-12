@@ -1,22 +1,9 @@
-export async function callApi<TBody, TResponse>(
-  url: string,
-  body: TBody
-): Promise<TResponse> {
-  const finalURL = `https://testreg2026.pseb.ac.in/api/${url}`
-  const response = await fetch(finalURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+import axiosBase from "./axios";
 
-  const responseText = await response.text();
-  if (!response.ok) {
-    throw new Error(
-      `API Error: ${response.status} - ${responseText}`
-    );
-  }
+export const getSchoolDetails = (url: string, SchlCode: string) => {
+  return axiosBase.post(url, { SchlCode });
+}
 
-  return JSON.parse(responseText) as TResponse;
+export const getStudentsDetails = (url: string, body: any) => {
+  return axiosBase.post(url, body);
 }

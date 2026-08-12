@@ -1,4 +1,4 @@
-import { callApi } from "../api/callApi";
+import { getStudentsDetails } from "../api/callApi";
 
 interface StudentRequest {
     SchlCode: string;
@@ -8,33 +8,25 @@ interface StudentRequest {
     fields: []
 }
 
-interface StudentResponse {
-    status: string;
-    message: string;
-    data: any;
-    error?: {
-        details: string;
-    };
-}
 
 export async function getStudent(body: StudentRequest) {
 
-    const response = await callApi<StudentRequest, StudentResponse>(
+    const response = await getStudentsDetails(
         "ChatBoatApi/GetStudentClassDetails",
         body
     );
-    console.log(response, 'response', body, 'body')
-    if (!response) {
+
+    if (response.status !== 200) {
         return {
             success: false,
             message: "No student record was found."
         };
     }
-
-    if (!response.status || !response.data) {
+    const result = response.data;
+    if (!result.status || !result.data) {
         return {
             success: false,
-            message: response.message || "No student record was found."
+            message: result.message || "No student record was found."
         };
     }
 
@@ -44,7 +36,7 @@ export async function getStudent(body: StudentRequest) {
 
     if (["1", "2", "3", "4", "5", "6"].includes(body.Type)) {
 
-        const count = response.data.StudentCount;
+        const count = result.data.StudentCount;
 
         switch (body.Type) {
 
@@ -91,9 +83,9 @@ export async function getStudent(body: StudentRequest) {
     // -----------------------
 
     if (["7", "8", "9", "10", "11", "12"].includes(body.Type)) {
-        const students = Array.isArray(response.data)
-            ? response.data
-            : [response.data];
+        const students = Array.isArray(result.data)
+            ? result.data
+            : [result.data];
 
         const allowedKeys =
             body.fields && body.fields.length > 0

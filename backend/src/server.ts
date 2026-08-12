@@ -5,10 +5,17 @@ import express from "express";
 import chatRouter from "./routers/chat.route.js";
 import cors from "cors";
 import connectDB from "./config/db.js";
-
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://testreg2026.pseb.ac.in",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Default API route

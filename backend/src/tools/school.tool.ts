@@ -1,67 +1,16 @@
-import { callApi } from "../api/callApi";
+import { getSchoolDetails } from "../api/callApi";
 
-interface CollegeRequest {
-    SchlCode: string;
-}
+export async function getCollegeDetails(SchlCode: string) {
+    const response = await getSchoolDetails("ChatBoatApi/GetChatBotDetails", SchlCode);
 
-interface CollegeResponse {
-    status: number;
-    message: string;
-    data: {
-        Schl: string;
-        UDISECode: string;
-        Class: string;
-        Area: string;
-        SchlNme: string;
-        DistNm: string;
-        UserType: string;
-        MID_UType: string;
-        HID_UType: string;
-        H_UType: string;
-        S_UType: string;
-        C_UType: string;
-        V_UType: string;
-        Middle: string;
-        Matric: string;
-        Hum: string;
-        Sci: string;
-        Comm: string;
-        Voc: string;
-    } | null;
-    error?: {
-        code: number;
-        message: string;
-        details: string;
-    };
-    failedPacketIds: string[];
-}
-
-export async function getCollegeDetails(
-    body: CollegeRequest
-) {
-    const response = await callApi<
-        CollegeRequest,
-        CollegeResponse
-    >(
-        "ChatBoatApi/GetChatBotDetails",
-        body
-    );
-    
-    if (!response) {
+    if (response.status !== 200 || !response.data.data) {
         return {
             success: false,
-            message: "No school details found."
+            message: response.data.message || "No school details found."
         };
     }
 
-    if (response.status !== 200 || !response.data) {
-        return {
-            success: false,
-            message: response.message || "No school details found."
-        };
-    }
-
-    const data = response.data;
+    const data = response.data.data;
 
     return {
         success: true,
