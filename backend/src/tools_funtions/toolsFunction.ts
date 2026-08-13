@@ -1,3 +1,5 @@
+import { pdfDocuments } from "../constant/pdfDocuments";
+
 export const studentToolFN = {
   type: "function" as const,
   function: {
@@ -277,5 +279,53 @@ export const schoolToolFN = {
     name: "get_college_details",
     description:
       "Use this tool when user asks about school details, school information, school name, address, UDISE, principal or other school profile information."
+  }
+};
+
+export const pdfToolFN = {
+  type: "function" as const,
+
+  function: {
+    name: "search_pseb_pdf",
+
+    description: `
+Use this tool whenever the user asks about PSEB circulars,
+orders, notifications, instructions, policies, rules or any
+information that may be contained in a PSEB PDF.
+
+Available PSEB PDFs:
+
+${pdfDocuments
+        .map(
+          (pdf) =>
+            `PDF ID: ${pdf.id}
+Title: ${pdf.title}`
+        )
+        .join("\n\n")}
+
+Select the PDF whose title/content is most relevant to the
+user's question.
+
+Return the exact PDF ID from the available PDFs.
+
+Do not invent a PDF ID.
+
+The query should contain the actual information the user wants
+to find inside the selected PDF.
+`,
+
+    parameters: {
+      type: "object",
+
+      properties: {
+        pdfId: {
+          type: "string",
+          description:
+            "ID of the most relevant PSEB PDF from the available PDF list."
+        },
+      },
+
+      required: ["pdfId"]
+    }
   }
 };
