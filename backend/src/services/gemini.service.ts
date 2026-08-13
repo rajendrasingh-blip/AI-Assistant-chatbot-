@@ -1,10 +1,7 @@
 import Groq from "groq-sdk";
 import { getStudent } from "../tools/students.tool";
 import { getCollegeDetails } from "../tools/school.tool";
-import {
-  schoolToolFN,
-  studentToolFN,
-} from "../tools_funtions/toolsFunction";
+import { schoolToolFN, studentToolFN, } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
 import { systemPrompt } from "../ai_prompt_message/prompt";
 
