@@ -3,7 +3,7 @@ import { getStudent } from "../tools/students.tool";
 import { getCollegeDetails, } from "../tools/school.tool";
 import { schoolToolFN, studentToolFN, pdfToolFN, } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
-import { systemPrompt, } from "../ai_prompt_message/prompt";
+import { systemPrompt, } from "../ai_prompt_message/prompt" ;
 import { searchPsebPdf, } from "../tools/pdfSearch.tool";
 const grokApiKey = process.env.GROK_API_KEY;
 

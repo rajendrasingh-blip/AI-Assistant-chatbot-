@@ -3,13 +3,13 @@ import path from "path";
 import os from "os";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
-interface ExtractedPage {
+export interface ExtractedPage {
   pageNumber: number;
   text: string;
   hasText: boolean;
 }
 
-interface ExtractedPdf {
+export interface ExtractedPdf {
   totalPages: number;
   pages: ExtractedPage[];
 }
@@ -37,6 +37,7 @@ export async function downloadPdf(
     tempDir,
     "document.pdf"
   );
+
   await fs.writeFile(
     pdfPath,
     Buffer.from(arrayBuffer)
@@ -71,13 +72,31 @@ export async function extractPdfText(
     const text = textContent.items
       .map((item: any) => item.str || "")
       .join(" ")
-      .replace(/\s+/g, " ")
       .trim();
+
+    /*
+     * IMPORTANT:
+     * 30 characters is NOT enough.
+     *
+     * Scanned pages can contain only:
+     * - File number
+     * - eOffice header
+     * - page number
+     *
+     * So use a higher threshold.
+     */
+    const meaningfulText =
+      text
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const hasText =
+      meaningfulText.length >= 500;
 
     pages.push({
       pageNumber,
       text,
-      hasText: text.length > 20,
+      hasText,
     });
   }
 
