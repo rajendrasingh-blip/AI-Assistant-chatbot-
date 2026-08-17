@@ -1,10 +1,9 @@
 import Groq from "groq-sdk";
 import fs from "fs/promises";
 import path from "path";
-
-import { pdfDocuments } from "../constant/pdfDocuments";
 import { downloadPdf, } from "../services/pdfExtractor.services";
 import { ocrPdf, } from "../services/pdfOcr.service";
+import { getPdfRecords } from "../api/callApi";
 
 const grokApiKey = process.env.GROK_API_KEY;
 
@@ -27,8 +26,10 @@ export async function searchPsebPdf({
     pdfId,
     query,
 }: SearchPsebPdfParams) {
+    const pdfDocuments = getPdfRecords();
+
     const pdf = pdfDocuments.find(
-        (item) => item.id === pdfId
+        (item) => item.Id === pdfId
     );
 
     if (!pdf) {
@@ -45,7 +46,7 @@ export async function searchPsebPdf({
     let pdfPath: string | null = null;
 
     try {
-        pdfPath = await downloadPdf(pdf.url);
+        pdfPath = await downloadPdf(pdf.Attachment);
         const ocrResult = await ocrPdf(pdfPath, pdfId);
 
         const response =
@@ -129,10 +130,10 @@ IMPORTANT RULES:
 PDF INFORMATION:
 
 PDF ID:
-${pdf.id}
+${pdf.Id}
 
 PDF TITLE:
-${pdf.title}
+${pdf.Title}
 
 TOTAL PAGES:
 ${ocrResult.totalPages}
@@ -167,8 +168,8 @@ ${ocrResult.pdfText}
                 success: false,
                 message:
                     "I found the relevant PDF, but could not generate an answer from it.",
-                pdfId: pdf.id,
-                pdfTitle: pdf.title,
+                pdfId: pdf.Id,
+                pdfTitle: pdf.Title,
             };
         }
 
@@ -177,9 +178,9 @@ ${ocrResult.pdfText}
 
             message: finalAnswer,
 
-            pdfId: pdf.id,
+            pdfId: pdf.Id,
 
-            pdfTitle: pdf.title,
+            pdfTitle: pdf.Title,
 
             totalPages:
                 ocrResult.totalPages,

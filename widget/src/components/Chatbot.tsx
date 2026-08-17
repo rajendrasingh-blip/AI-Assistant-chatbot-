@@ -226,7 +226,7 @@ function ChatbotContent(props: Props) {
                                                     remarkPlugins={[remarkGfm]}
                                                     components={{
                                                         p: ({ children }) => (
-                                                            <p className="mb-3 leading-6 last:mb-0">
+                                                            <p className="mb-3 leading-6 last:mb-0 break-words">
                                                                 {children}
                                                             </p>
                                                         ),
@@ -250,9 +250,23 @@ function ChatbotContent(props: Props) {
                                                         ),
 
                                                         li: ({ children }) => (
-                                                            <li className="leading-6">
+                                                            <li className="leading-6 break-words">
                                                                 {children}
                                                             </li>
+                                                        ),
+
+                                                        // IMPORTANT
+                                                        pre: ({ children }) => (
+                                                            <pre className="max-w-full overflow-x-auto whitespace-pre-wrap break-words">
+                                                                {children}
+                                                            </pre>
+                                                        ),
+
+                                                        // IMPORTANT
+                                                        code: ({ children }) => (
+                                                            <code className="break-words whitespace-pre-wrap [overflow-wrap:anywhere]">
+                                                                {children}
+                                                            </code>
                                                         ),
 
                                                         h1: ({ children }) => (
@@ -274,7 +288,7 @@ function ChatbotContent(props: Props) {
                                                         ),
 
                                                         table: ({ children }) => (
-                                                            <div className="w-full overflow-x-auto mb-4">
+                                                            <div className="w-full max-w-full overflow-x-auto mb-4">
                                                                 <table className="min-w-full border-collapse border border-gray-300 text-sm">
                                                                     {children}
                                                                 </table>
@@ -306,7 +320,7 @@ function ChatbotContent(props: Props) {
                                                         ),
 
                                                         td: ({ children }) => (
-                                                            <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                            <td className="border border-gray-300 px-3 py-2 text-gray-700 break-words">
                                                                 {children}
                                                             </td>
                                                         ),

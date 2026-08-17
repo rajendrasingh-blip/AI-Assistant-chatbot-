@@ -3,6 +3,7 @@ import express from "express";
 import chatRouter from "./routers/chat.route.js";
 import cors from "cors";
 import connectDB from "./config/db.js";
+import { loadPdfRecords } from "./api/callApi.js";
 const app = express();
 
 app.use(
@@ -28,7 +29,8 @@ app.use("/api", chatRouter);
 
 const connectServer = async () => {
   await connectDB();
-
+  await loadPdfRecords();
+  
   app.listen(5000, () => {
     console.log("server running on port 5000");
   });

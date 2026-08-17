@@ -437,3 +437,32 @@
     padding:9px 12px;
     text-align:left;
 }
+
+.cb-markdown {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.cb-markdown pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+
+.cb-markdown code {
+    max-width: 100%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.cb-markdown a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}

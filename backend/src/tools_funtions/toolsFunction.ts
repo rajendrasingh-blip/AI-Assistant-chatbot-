@@ -1,4 +1,4 @@
-import { pdfDocuments } from "../constant/pdfDocuments";
+import { getPdfRecords } from "../api/callApi";
 
 export const studentToolFN = {
   type: "function" as const,
@@ -282,13 +282,16 @@ export const schoolToolFN = {
   }
 };
 
-export const pdfToolFN = {
-  type: "function" as const,
+export const pdfToolFN = () => {
+  const pdfDocuments = getPdfRecords();
 
-  function: {
-    name: "search_pseb_pdf",
+  return {
+    type: "function" as const,
 
-    description: `
+    function: {
+      name: "search_pseb_pdf",
+
+      description: `
 Use this tool whenever the user asks about PSEB circulars,
 orders, notifications, instructions, policies, rules or any
 information that may be contained in a PSEB PDF.
@@ -296,12 +299,12 @@ information that may be contained in a PSEB PDF.
 Available PSEB PDFs:
 
 ${pdfDocuments
-        .map(
-          (pdf) =>
-            `PDF ID: ${pdf.id}
-Title: ${pdf.title}`
-        )
-        .join("\n\n")}
+          .map(
+            (pdf) =>
+              `PDF ID: ${pdf.Id}
+Title: ${pdf.Title}`
+          )
+          .join("\n\n")}
 
 Select the PDF whose title/content is most relevant to the
 user's question.
@@ -314,18 +317,19 @@ The query should contain the actual information the user wants
 to find inside the selected PDF.
 `,
 
-    parameters: {
-      type: "object",
+      parameters: {
+        type: "object",
 
-      properties: {
-        pdfId: {
-          type: "string",
-          description:
-            "ID of the most relevant PSEB PDF from the available PDF list."
+        properties: {
+          pdfId: {
+            type: "string",
+            description:
+              "ID of the most relevant PSEB PDF from the available PDF list.",
+          },
         },
-      },
 
-      required: ["pdfId"]
-    }
-  }
+        required: ["pdfId"],
+      },
+    },
+  };
 };
