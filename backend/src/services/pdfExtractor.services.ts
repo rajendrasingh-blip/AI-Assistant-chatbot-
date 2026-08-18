@@ -25,22 +25,55 @@ export async function downloadPdf(
     );
   }
 
-  const arrayBuffer = await response.arrayBuffer();
+  console.log(
+    `PDF download:
+     URL: ${url}
+     Content-Type: ${response.headers.get("content-type")}
+     Content-Length: ${response.headers.get("content-length")}`
+  );
+
+  const arrayBuffer =
+    await response.arrayBuffer();
+
+  const buffer =
+    Buffer.from(arrayBuffer);
+
+  if (buffer.length < 5) {
+    throw new Error(
+      "Downloaded file is empty or too small."
+    );
+  }
+
+  const signature =
+    buffer
+      .subarray(0, 5)
+      .toString("ascii");
+
+  if (signature !== "%PDF-") {
+    throw new Error(
+      `Downloaded content is not a valid PDF. Signature: ${signature}`
+    );
+  }
 
   const tempRoot = os.tmpdir();
 
-  const tempDir = await fs.mkdtemp(
-    path.join(tempRoot, "pseb-pdf-")
-  );
+  const tempDir =
+    await fs.mkdtemp(
+      path.join(
+        tempRoot,
+        "pseb-pdf-"
+      )
+    );
 
-  const pdfPath = path.join(
-    tempDir,
-    "document.pdf"
-  );
+  const pdfPath =
+    path.join(
+      tempDir,
+      "document.pdf"
+    );
 
   await fs.writeFile(
     pdfPath,
-    Buffer.from(arrayBuffer)
+    buffer
   );
 
   return pdfPath;
@@ -74,17 +107,6 @@ export async function extractPdfText(
       .join(" ")
       .trim();
 
-    /*
-     * IMPORTANT:
-     * 30 characters is NOT enough.
-     *
-     * Scanned pages can contain only:
-     * - File number
-     * - eOffice header
-     * - page number
-     *
-     * So use a higher threshold.
-     */
     const meaningfulText =
       text
         .replace(/\s+/g, " ")

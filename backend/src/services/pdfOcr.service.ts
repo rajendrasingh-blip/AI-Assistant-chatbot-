@@ -23,23 +23,6 @@ export interface OcrPdfResult {
   pdfText: string;
 }
 
-const cacheDir = path.join(
-  process.cwd(),
-  "temp",
-  "pdf-cache"
-);
-
-const CACHE_VERSION = "v2";
-
-function getCachePath(
-  pdfId: string
-) {
-  return path.join(
-    cacheDir,
-    `${pdfId}-${CACHE_VERSION}.txt`
-  );
-}
-
 async function renderPdfPage(
   pdfPath: string,
   pageNumber: number,
@@ -111,76 +94,6 @@ export async function ocrPdf(
   pdfId: string
 ): Promise<OcrPdfResult> {
 
-  const cachePath =
-    getCachePath(pdfId);
-
-  /*
-   * Cache
-   */
-  try {
-
-    const cachedText =
-      await fs.readFile(
-        cachePath,
-        "utf8"
-      );
-
-    if (cachedText.trim()) {
-
-      console.log(
-        `PDF cache HIT: ${pdfId}`
-      );
-
-      const pages: FinalPage[] =
-        cachedText
-          .split(
-            /===== PAGE (\d+) =====/g
-          )
-          .reduce(
-            (
-              result: FinalPage[],
-              value: string,
-              index: number,
-              array: string[]
-            ) => {
-
-              if (index % 2 === 1) {
-
-                result.push({
-                  pageNumber:
-                    Number(value),
-
-                  text:
-                    array[index + 1]
-                      ?.trim() || "",
-
-                  source:
-                    "ocr",
-                });
-              }
-
-              return result;
-            },
-            []
-          );
-
-      return {
-        totalPages: pages.length,
-        pages,
-        pdfText: cachedText,
-      };
-    }
-
-  } catch {
-    console.log(
-      `PDF cache MISS: ${pdfId}`
-    );
-  }
-
-  /*
-   * STEP 1
-   * Extract native PDF text
-   */
   const extracted =
     await extractPdfText(
       pdfPath
@@ -200,20 +113,10 @@ export async function ocrPdf(
   const pages: FinalPage[] = [];
 
   try {
-
-    /*
-     * STEP 2
-     * Process page by page
-     */
     for (
       const page of extracted.pages
     ) {
-
-      /*
-       * Native PDF text is sufficient
-       */
       if (page.hasText) {
-
         console.log(
           `PAGE ${page.pageNumber}/${totalPages} → PDF TEXT (${page.text.length} chars)`
         );
@@ -231,11 +134,6 @@ export async function ocrPdf(
 
         continue;
       }
-
-      /*
-       * Native text is insufficient
-       * → OCR
-       */
       console.log(
         `PAGE ${page.pageNumber}/${totalPages} → OCR (${page.text.length} native chars)`
       );
@@ -264,10 +162,7 @@ export async function ocrPdf(
       });
     }
 
-    /*
-     * STEP 3
-     * Final PDF content
-     */
+  
     const pdfText =
       pages
         .map(
@@ -276,27 +171,6 @@ export async function ocrPdf(
         )
         .join("\n\n")
         .trim();
-
-    /*
-     * STEP 4
-     * Cache
-     */
-    await fs.mkdir(
-      cacheDir,
-      {
-        recursive: true,
-      }
-    );
-
-    await fs.writeFile(
-      cachePath,
-      pdfText,
-      "utf8"
-    );
-
-    console.log(
-      `PDF cache CREATED: ${pdfId}`
-    );
 
     return {
       totalPages,
