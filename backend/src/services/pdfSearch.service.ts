@@ -11,29 +11,14 @@ export interface PdfSearchResult {
     score: number;
 }
 
-function cleanSearchQuery(
-    query: unknown
-): string {
-    if (typeof query !== "string") {
-        throw new TypeError(
-            `PDF search query must be a string, received: ${typeof query}`
-        );
-    }
 
-    return query
-        .replace(/[^\p{L}\p{N}\s]/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-}
 
 export async function searchPdfChunks(
     query: string,
     limit = 5
 ): Promise<PdfSearchResult[]> {
-    const cleanQuery =
-        cleanSearchQuery(query);
 
-    if (!cleanQuery) {
+    if (!query) {
         return [];
     }
 
@@ -42,7 +27,7 @@ export async function searchPdfChunks(
             {
                 $match: {
                     $text: {
-                        $search: cleanQuery,
+                        $search: query,
                     },
                 },
             },
@@ -180,7 +165,7 @@ export async function searchPdfChunks(
 
 export async function getPdfPageContent(
     pdfId: string,
-    pageNumber?: number|null
+    pageNumber?: number | null
 ): Promise<PdfSearchResult[]> {
     if (!pdfId || !Number.isInteger(pageNumber)) {
         return [];

@@ -22,7 +22,7 @@ function ChatbotContent(props: Props) {
     const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
     const { projectId, collegeCode } = props;
 
-
+  
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {

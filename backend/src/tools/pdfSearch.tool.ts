@@ -137,7 +137,7 @@ ${pdfContext}`,
                     },
                 ],
             });
-        console.log(response, 'response')
+   
         const finalAnswer =
             response.choices[0]
                 ?.message

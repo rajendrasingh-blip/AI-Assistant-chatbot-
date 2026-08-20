@@ -85,9 +85,15 @@ export async function grokGenerateContent(
 
         const type =
           Number(args.type);
+        const classIdMap: Record<string, string> = {
+          "9": "1",
+          "10": "2",
+          "11": "3",
+          "12": "4",
+        };
 
-        const classId =
-          args.classId ?? null;
+        const rawClassId = String(args.classId);
+        const classId = classIdMap[rawClassId] ?? null;
 
         const formType =
           args.formType ?? null;
@@ -108,13 +114,10 @@ export async function grokGenerateContent(
 
         return await getStudent({
           SchlCode: collegeCode,
-
           Class: classId,
-
+          rawClassId: rawClassId,
           Type: String(type),
-
           Form: formType,
-
           fields,
         });
       }
