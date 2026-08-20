@@ -392,7 +392,15 @@ function ChatbotContent(props: Props) {
                                         const value = e.target.value as "pdf" | "school" | "pdf-deep-search";
                                         setSearchType(value);
                                     }}
-                                    className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-6 text-sm outline-none"
+                                    style={{
+                                        width:
+                                            searchType === "pdf"
+                                                ? "55px"
+                                                : searchType === "school"
+                                                    ? "75px"
+                                                    : "95px",
+                                    }}
+                                     className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-7 outline-none"
                                 >
                                     <option value="pdf">PDF</option>
                                     <option value="school">School</option>
