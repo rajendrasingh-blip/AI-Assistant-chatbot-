@@ -48,39 +48,39 @@ app.use("/api", chatRouter);
 const connectServer = async () => {
   try {
     await connectDB();
-    // await loadPdfRecords();
-    // const pdfRecords = getPdfRecords();
-    // const apiPdfCount = pdfRecords.length;
-    // const dbPdfCount = await PsebPdfDocument.countDocuments();
+    await loadPdfRecords();
+    const pdfRecords = getPdfRecords();
+    const apiPdfCount = pdfRecords.length;
+    const dbPdfCount = await PsebPdfDocument.countDocuments();
 
-    // console.log(
-    //   `API PDFs: ${apiPdfCount}, MongoDB PDFs: ${dbPdfCount}`
-    // );
+    console.log(
+      `API PDFs: ${apiPdfCount}, MongoDB PDFs: ${dbPdfCount}`
+    );
 
-    // if (apiPdfCount > dbPdfCount) {
-    //   console.log(
-    //     "New PDF(s) detected. Syncing PDF metadata..."
-    //   );
+    if (apiPdfCount > dbPdfCount) {
+      console.log(
+        "New PDF(s) detected. Syncing PDF metadata..."
+      );
 
-    //   await syncPsebPdfDocuments();
+      await syncPsebPdfDocuments();
 
-    //   console.log(
-    //     "Starting background PDF indexing..."
-    //   );
+      console.log(
+        "Starting background PDF indexing..."
+      );
 
-    //   indexPendingPdfs().catch(
-    //     (error) => {
-    //       console.error(
-    //         "Background PDF indexing failed:",
-    //         error
-    //       );
-    //     }
-    //   );
-    // } else {
-    //   console.log(
-    //     "No new PDFs detected. Skipping PDF sync and indexing."
-    //   );
-    // }
+      indexPendingPdfs().catch(
+        (error) => {
+          console.error(
+            "Background PDF indexing failed:",
+            error
+          );
+        }
+      );
+    } else {
+      console.log(
+        "No new PDFs detected. Skipping PDF sync and indexing."
+      );
+    }
 
     app.listen(5000, () => {
       console.log(
