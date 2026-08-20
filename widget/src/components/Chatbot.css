@@ -295,7 +295,7 @@
 
     background:transparent;
 
-    font-size:14px;
+    font-size:14px !important;
 
     color:#263442;
 }
@@ -465,4 +465,32 @@
 .cb-markdown a {
     overflow-wrap: anywhere;
     word-break: break-word;
+}
+
+.cb-search-select {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    background: transparent;
+    border-radius: 7px;
+    transition: all 0.2s ease;
+}
+
+.cb-search-select:hover {
+    background: #f3f4f6;
+}
+
+.cb-search-select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Dropdown options */
+.cb-search-select option {
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+    background: #ffffff;
+    padding: 8px;
+    cursor: pointer;
 }

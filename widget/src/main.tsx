@@ -21,9 +21,9 @@ if (!window.PSEBChatbotLoaded) {
       collegeCode,
     });
   }
-  initChatbot({
-    projectId: "olympiad",
-    collegeCode: "9999999",
-  });
+  // initChatbot({
+  //   projectId: "olympiad",
+  //   collegeCode: "9999999",
+  // });
 }
 

@@ -1,11 +1,20 @@
 import { grokGenerateContent } from "../services/gemini.service.js";
 import type { Request, Response } from "express";
+import { searchPsebPdf } from "../tools/pdfSearch.tool.js";
 
 export const geminiAiChat = async (req: Request, res: Response) => {
     try {
-        const { query, collegeCode } = req.body;
+        const { query, collegeCode, searchType } = req.body;
+        let chatres = null;
 
-        const chatres = await grokGenerateContent(query, collegeCode);
+        if (searchType === "pdf") {
+            chatres = await searchPsebPdf(query.content, 2);
+        } else if (searchType === "pdf-deep-search") {
+            chatres = await searchPsebPdf(query.content, 5);
+        }
+        else {
+            chatres = await grokGenerateContent(query, collegeCode);
+        }
 
         if (!chatres) {
             return res.status(404).json({
@@ -13,7 +22,7 @@ export const geminiAiChat = async (req: Request, res: Response) => {
                 message: "No response generated."
             });
         }
-        
+
         return res.status(200).json({
             success: chatres.success,
             message: "Response generated successfully.",

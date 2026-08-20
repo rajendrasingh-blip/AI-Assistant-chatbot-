@@ -4,6 +4,7 @@ interface StudentRequest {
     SchlCode: string;
     Type: string;
     Class: string | null;
+    rawClassId: string | null;
     Form: string | null;
     fields: []
 }
@@ -49,7 +50,7 @@ export async function getStudent(body: StudentRequest) {
             case "2":
                 return {
                     success: true,
-                    message: `Class ${body.Class} - Total Students: ${count}`
+                    message: `Class ${body.rawClassId} - Total Students: ${count}`
                 };
 
             case "3":
@@ -61,7 +62,7 @@ export async function getStudent(body: StudentRequest) {
             case "4":
                 return {
                     success: true,
-                    message: `Class ${body.Class} - Fee Paid Students: ${count}`
+                    message: `Class ${body.rawClassId} - Fee Paid Students: ${count}`
                 };
 
             case "5":
@@ -73,7 +74,7 @@ export async function getStudent(body: StudentRequest) {
             case "6":
                 return {
                     success: true,
-                    message: `Class ${body.Class} - Fee Unpaid Students: ${count}`
+                    message: `Class ${body.rawClassId} - Fee Unpaid Students: ${count}`
                 };
         }
     }

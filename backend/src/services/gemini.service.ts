@@ -1,10 +1,9 @@
 import Groq from "groq-sdk";
 import { getStudent } from "../tools/students.tool";
 import { getCollegeDetails, } from "../tools/school.tool";
-import { schoolToolFN, studentToolFN, pdfToolFN, } from "../tools_funtions/toolsFunction";
+import { schoolToolFN, studentToolFN, } from "../tools_funtions/toolsFunction";
 import { ChatMessage } from "../types/message";
 import { systemPrompt, } from "../ai_prompt_message/prompt";
-import { searchPsebPdf, } from "../tools/pdfSearch.tool";
 const grokApiKey = process.env.GROK_API_KEY;
 
 if (!grokApiKey) {
@@ -22,7 +21,6 @@ export async function grokGenerateContent(
   messages: ChatMessage,
   collegeCode: string
 ) {
-  const pdfTool = pdfToolFN();
   try {
     const conversation = [
       systemPrompt,
@@ -39,7 +37,6 @@ export async function grokGenerateContent(
         tools: [
           studentToolFN,
           schoolToolFN,
-          pdfTool,
         ],
 
         tool_choice: "auto",
@@ -88,9 +85,15 @@ export async function grokGenerateContent(
 
         const type =
           Number(args.type);
+        const classIdMap: Record<string, string> = {
+          "9": "1",
+          "10": "2",
+          "11": "3",
+          "12": "4",
+        };
 
-        const classId =
-          args.classId ?? null;
+        const rawClassId = String(args.classId);
+        const classId = classIdMap[rawClassId] ?? null;
 
         const formType =
           args.formType ?? null;
@@ -111,13 +114,10 @@ export async function grokGenerateContent(
 
         return await getStudent({
           SchlCode: collegeCode,
-
           Class: classId,
-
+          rawClassId: rawClassId,
           Type: String(type),
-
           Form: formType,
-
           fields,
         });
       }
@@ -137,12 +137,6 @@ export async function grokGenerateContent(
         );
       }
 
-      case "search_pseb_pdf": {
-        return await searchPsebPdf({
-          pdfId: String(args.pdfId),
-          query: messages.content as string,
-        });
-      }
       default: {
 
         return {

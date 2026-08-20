@@ -1,9 +1,6 @@
 import Groq from "groq-sdk";
-import fs from "fs/promises";
-import path from "path";
-import { downloadPdf, } from "../services/pdfExtractor.services";
-import { ocrPdf, } from "../services/pdfOcr.service";
-import { getPdfRecords } from "../api/callApi";
+import { getPdfPageContent, searchPdfChunks } from "../services/pdfSearch.service";
+import { extractPdfPageQuery } from "../constant/pdfregex";
 
 const grokApiKey = process.env.GROK_API_KEY;
 
@@ -17,37 +14,36 @@ const groq = new Groq({
     apiKey: grokApiKey,
 });
 
-interface SearchPsebPdfParams {
-    pdfId: string;
-    query: string;
-}
 
-export async function searchPsebPdf({
-    pdfId,
-    query,
-}: SearchPsebPdfParams) {
-    const pdfDocuments = getPdfRecords();
-
-    const pdf = pdfDocuments.find(
-        (item) => item.Id === pdfId
-    );
-
-    if (!pdf) {
-        console.error(
-            `PDF not found: ${pdfId}`
-        );
-
-        return {
-            success: false,
-            message:
-                "Sorry, the relevant PSEB PDF could not be found.",
-        };
-    }
-    let pdfPath: string | null = null;
+export async function searchPsebPdf(query: string, searchLimit: number) {
+    let ocrResult = null;
+    const { pdfId, pageNumber } = extractPdfPageQuery(query) ?? {
+        pdfId: undefined,
+        pageNumber: undefined,
+    };
 
     try {
-        pdfPath = await downloadPdf(pdf.Attachment);
-        const ocrResult = await ocrPdf(pdfPath, pdfId);
+        if (pdfId) {
+            ocrResult = await getPdfPageContent(pdfId, pageNumber);
+        } else {
+            ocrResult = await searchPdfChunks(query, searchLimit);
+        }
+        const pdfContext = ocrResult
+            .map((item, index) => {
+                return `
+SOURCE ${index + 1}
+
+PDF ID: ${item.pdfId}
+PDF TITLE: ${item.pdfTitle || "N/A"}
+PAGE NUMBER: ${item.pageNumber}
+CHUNK INDEX: ${item.chunkIndex}
+SOURCE TYPE: ${item.source}
+
+PDF CONTENT:
+${item.content}
+`;
+            })
+            .join("\n\n==============================\n\n");
 
         const response =
             await groq.chat.completions.create({
@@ -70,7 +66,8 @@ IMPORTANT RULES:
 
 3. DO NOT invent, assume, infer, or add information.
 
-4. Identify the page(s) and passage(s) relevant to the user's question.
+4. For normal questions, identify the relevant page(s) and passage(s).
+   If the user asks for full page or complete content, return the supplied content without omitting relevant information.
 
 5. Return the relevant information from the PDF with MINIMUM modification.
 
@@ -127,36 +124,20 @@ IMPORTANT RULES:
 
 17. Do not add unnecessary introduction or conclusion.
 
-PDF INFORMATION:
+18. If the user asks for the complete content, full data, or entire page of the supplied PDF, return the supplied content as completely as possible without summarizing or omitting information.
 
-PDF ID:
-${pdf.Id}
-
-PDF TITLE:
-${pdf.Title}
-
-TOTAL PAGES:
-${ocrResult.totalPages}
-`
-                    },
-
+19. Never claim to provide the complete PDF unless the complete PDF content is supplied.`},
                     {
                         role: "user",
-
-                        content: `
-USER QUESTION:
-
+                        content: `USER QUESTION:
 ${query}
 
-
 SUPPLIED PDF CONTENT:
-
-${ocrResult.pdfText}
-`,
+${pdfContext}`,
                     },
                 ],
             });
-
+   
         const finalAnswer =
             response.choices[0]
                 ?.message
@@ -168,8 +149,6 @@ ${ocrResult.pdfText}
                 success: false,
                 message:
                     "I found the relevant PDF, but could not generate an answer from it.",
-                pdfId: pdf.Id,
-                pdfTitle: pdf.Title,
             };
         }
 
@@ -177,13 +156,6 @@ ${ocrResult.pdfText}
             success: true,
 
             message: finalAnswer,
-
-            pdfId: pdf.Id,
-
-            pdfTitle: pdf.Title,
-
-            totalPages:
-                ocrResult.totalPages,
         };
     } catch (error: any) {
         console.error(
@@ -198,23 +170,5 @@ ${ocrResult.pdfText}
                 error?.message ||
                 "Unable to process the PDF.",
         };
-    } finally {
-        if (pdfPath) {
-            try {
-                await fs.rm(
-                    path.dirname(pdfPath),
-                    {
-                        recursive: true,
-                        force: true,
-                    }
-                );
-
-            } catch (cleanupError) {
-                console.error(
-                    "PDF cleanup failed:",
-                    cleanupError
-                );
-            }
-        }
     }
 }

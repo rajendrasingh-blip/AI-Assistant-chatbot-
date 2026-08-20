@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { fetchGeminiChat } from "../api/api";
 import ReactMarkdown from "react-markdown";
-import { X, Send, Bot } from "lucide-react";
+import { X, Send, Bot, ChevronDown } from "lucide-react";
 import remarkGfm from "remark-gfm";
 
 type Props = {
@@ -19,10 +19,10 @@ function ChatbotContent(props: Props) {
     const [question, setQuestion] = useState("");
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-
+    const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
     const { projectId, collegeCode } = props;
 
-
+  
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -77,7 +77,8 @@ function ChatbotContent(props: Props) {
             const answer = await fetchGeminiChat(
                 currentQuery,
                 collegeCode,
-                projectId
+                projectId,
+                searchType
             );
 
             if (answer?.data) {
@@ -371,7 +372,7 @@ function ChatbotContent(props: Props) {
                         <div className="cb-input-wrapper flex items-center gap-2">
                             <input
                                 type="text"
-                                placeholder="Type your message..."
+                                placeholder="Choose search type and ask ..."
                                 value={question}
                                 onChange={handleQuestion}
                                 onKeyDown={(e) => {
@@ -385,7 +386,25 @@ function ChatbotContent(props: Props) {
                                 }}
                                 className="cb-input min-w-0 flex-1"
                             />
+                            <div className="relative shrink-0">
+                                <select
+                                    value={searchType || ""}
+                                    onChange={(e) => {
+                                        const value = e.target.value as "pdf" | "school" | "pdf-deep-search";
+                                        setSearchType(value);
+                                    }}
+                                    className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-7 text-sm outline-none"
+                                >
+                                    <option value="pdf">PDF</option>
+                                    <option value="school">School</option>
+                                    <option value="pdf-deep-search">Deep PDF</option>
+                                </select>
 
+                                <ChevronDown
+                                    size={15}
+                                    className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-gray-500"
+                                />
+                            </div>
                             <button
                                 disabled={
                                     loading ||
