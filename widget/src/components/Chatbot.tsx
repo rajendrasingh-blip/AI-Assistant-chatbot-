@@ -22,7 +22,6 @@ function ChatbotContent(props: Props) {
     const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
     const { projectId, collegeCode } = props;
 
-  
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -393,7 +392,7 @@ function ChatbotContent(props: Props) {
                                         const value = e.target.value as "pdf" | "school" | "pdf-deep-search";
                                         setSearchType(value);
                                     }}
-                                    className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-7 text-sm outline-none"
+                                    className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-6 text-sm outline-none"
                                 >
                                     <option value="pdf">PDF</option>
                                     <option value="school">School</option>
@@ -402,7 +401,7 @@ function ChatbotContent(props: Props) {
 
                                 <ChevronDown
                                     size={15}
-                                    className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-gray-500"
+                                    className="pointer-events-none absolute right-1 top-1/3 -translate-y-1/2 text-gray-500"
                                 />
                             </div>
                             <button
