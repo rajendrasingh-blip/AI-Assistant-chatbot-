@@ -9,7 +9,10 @@ export const geminiAiChat = async (req: Request, res: Response) => {
 
         if (searchType === "pdf") {
             chatres = await searchPsebPdf(query.content, 2);
-        } else {
+        } else if (searchType === "pdf-deep-search") {
+            chatres = await searchPsebPdf(query.content, 5);
+        }
+        else {
             chatres = await grokGenerateContent(query, collegeCode);
         }
 

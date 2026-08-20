@@ -37,10 +37,6 @@ export async function searchPdfChunks(
         return [];
     }
 
-    /*
-     * STEP 1
-     * MongoDB text search
-     */
     const chunks =
         await PSebPdfChunksModel.aggregate([
             {
@@ -68,10 +64,6 @@ export async function searchPdfChunks(
             {
                 $limit: limit,
             },
-
-            /*
-             * Get PDF metadata
-             */
             {
                 $lookup: {
                     from: "psebpddocuments",
@@ -184,4 +176,41 @@ export async function searchPdfChunks(
                 Number(item.score ?? 0),
         })
     );
+}
+
+export async function getPdfPageContent(
+    pdfId: string,
+    pageNumber?: number|null
+): Promise<PdfSearchResult[]> {
+    if (!pdfId || !Number.isInteger(pageNumber)) {
+        return [];
+    }
+
+    const chunks = await PSebPdfChunksModel.find(
+        {
+            pdfId,
+            pageNumber,
+        },
+        {
+            _id: 0,
+            pdfId: 1,
+            pageNumber: 1,
+            chunkIndex: 1,
+            content: 1,
+            source: 1,
+        }
+    )
+        .sort({ chunkIndex: 1 })
+        .lean();
+
+    return chunks.map((item: any) => ({
+        pdfId: String(item.pdfId),
+        pdfTitle: "",
+        attachment: "",
+        pageNumber: Number(item.pageNumber),
+        chunkIndex: Number(item.chunkIndex),
+        source: item.source,
+        content: String(item.content ?? ""),
+        score: 1,
+    }));
 }

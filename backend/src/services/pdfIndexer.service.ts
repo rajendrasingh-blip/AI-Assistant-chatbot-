@@ -90,7 +90,6 @@ export async function indexPdf(
         const result =
             await ocrPdf(
                 pdfPath,
-                pdfId
             );
 
         /*

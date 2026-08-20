@@ -5,9 +5,8 @@ type Message = {
     content: string
 }
 
-export const fetchGeminiChat = async (query: Message, collegeCode: string, projectId: string) => {
+export const fetchGeminiChat = async (query: Message, collegeCode: string, projectId: string, searchType: string | null) => {
     try {
-        const searchType = "pdf"
         const response = await axiosBase.post("/chat", { query, projectId, collegeCode, searchType })
 
         return response.data;

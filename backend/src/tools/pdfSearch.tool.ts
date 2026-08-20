@@ -1,5 +1,6 @@
 import Groq from "groq-sdk";
-import { searchPdfChunks } from "../services/pdfSearch.service";
+import { getPdfPageContent, searchPdfChunks } from "../services/pdfSearch.service";
+import { extractPdfPageQuery } from "../constant/pdfregex";
 
 const grokApiKey = process.env.GROK_API_KEY;
 
@@ -15,9 +16,18 @@ const groq = new Groq({
 
 
 export async function searchPsebPdf(query: string, searchLimit: number) {
+    let ocrResult = null;
+    const { pdfId, pageNumber } = extractPdfPageQuery(query) ?? {
+        pdfId: undefined,
+        pageNumber: undefined,
+    };
 
     try {
-        const ocrResult = await searchPdfChunks(query, searchLimit);
+        if (pdfId) {
+            ocrResult = await getPdfPageContent(pdfId, pageNumber);
+        } else {
+            ocrResult = await searchPdfChunks(query, searchLimit);
+        }
         const pdfContext = ocrResult
             .map((item, index) => {
                 return `
@@ -56,7 +66,8 @@ IMPORTANT RULES:
 
 3. DO NOT invent, assume, infer, or add information.
 
-4. Identify the page(s) and passage(s) relevant to the user's question.
+4. For normal questions, identify the relevant page(s) and passage(s).
+   If the user asks for full page or complete content, return the supplied content without omitting relevant information.
 
 5. Return the relevant information from the PDF with MINIMUM modification.
 
@@ -111,7 +122,11 @@ IMPORTANT RULES:
 
 16. Do not mention OCR, Groq, AI, model, prompt, tools or internal processing.
 
-17. Do not add unnecessary introduction or conclusion.`},
+17. Do not add unnecessary introduction or conclusion.
+
+18. If the user asks for the complete content, full data, or entire page of the supplied PDF, return the supplied content as completely as possible without summarizing or omitting information.
+
+19. Never claim to provide the complete PDF unless the complete PDF content is supplied.`},
                     {
                         role: "user",
                         content: `USER QUESTION:
@@ -122,7 +137,7 @@ ${pdfContext}`,
                     },
                 ],
             });
-
+        console.log(response, 'response')
         const finalAnswer =
             response.choices[0]
                 ?.message

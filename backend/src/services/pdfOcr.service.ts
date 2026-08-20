@@ -91,7 +91,6 @@ async function runTesseract(
 
 export async function ocrPdf(
   pdfPath: string,
-  pdfId: string
 ): Promise<OcrPdfResult> {
 
   const extracted =
@@ -116,24 +115,24 @@ export async function ocrPdf(
     for (
       const page of extracted.pages
     ) {
-      if (page.hasText) {
-        console.log(
-          `PAGE ${page.pageNumber}/${totalPages} → PDF TEXT (${page.text.length} chars)`
-        );
+      // if (page.hasText) {
+      //   console.log(
+      //     `PAGE ${page.pageNumber}/${totalPages} → PDF TEXT (${page.text.length} chars)`
+      //   );
 
-        pages.push({
-          pageNumber:
-            page.pageNumber,
+      //   pages.push({
+      //     pageNumber:
+      //       page.pageNumber,
 
-          text:
-            page.text,
+      //     text:
+      //       page.text,
 
-          source:
-            "pdf-text",
-        });
+      //     source:
+      //       "pdf-text",
+      //   });
 
-        continue;
-      }
+      //   continue;
+      // }
       console.log(
         `PAGE ${page.pageNumber}/${totalPages} → OCR (${page.text.length} native chars)`
       );
@@ -162,7 +161,7 @@ export async function ocrPdf(
       });
     }
 
-  
+
     const pdfText =
       pages
         .map(
