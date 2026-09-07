@@ -93,7 +93,7 @@ export async function grokGenerateContent(
         };
 
         const rawClassId = String(args.classId);
-        const classId = classIdMap[rawClassId] ?? null;
+        const classId = classIdMap[rawClassId] ?? rawClassId;
 
         const formType =
           args.formType ?? null;

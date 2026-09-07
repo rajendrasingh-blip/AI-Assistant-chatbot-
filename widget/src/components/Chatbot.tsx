@@ -374,6 +374,7 @@ function ChatbotContent(props: Props) {
                                 placeholder="Choose search type and ask ..."
                                 value={question}
                                 onChange={handleQuestion}
+
                                 onKeyDown={(e) => {
                                     if (
                                         e.key === "Enter" &&
@@ -385,6 +386,15 @@ function ChatbotContent(props: Props) {
                                 }}
                                 className="cb-input min-w-0 flex-1"
                             />
+                            {question && (
+                                <button
+                                    type="button"
+                                    onClick={() => setQuestion("")}
+                                    className="relative shrink-0 right-2 top-1/3 -translate-y-1/2 text-bold-400 hover:text-gray-600"
+                                >
+                                    ×
+                                </button>
+                            )}
                             <div className="relative shrink-0">
                                 <select
                                     value={searchType || ""}
@@ -400,7 +410,7 @@ function ChatbotContent(props: Props) {
                                                     ? "75px"
                                                     : "95px",
                                     }}
-                                     className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-7 outline-none"
+                                    className="cb-search-select appearance-none cursor-pointer py-2 pl-1 pr-7 outline-none"
                                 >
                                     <option value="pdf">PDF</option>
                                     <option value="school">School</option>

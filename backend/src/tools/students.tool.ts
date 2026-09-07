@@ -9,9 +9,7 @@ interface StudentRequest {
     fields: []
 }
 
-
 export async function getStudent(body: StudentRequest) {
-
     const response = await getStudentsDetails(
         "ChatBoatApi/GetStudentClassDetails",
         body
@@ -30,10 +28,6 @@ export async function getStudent(body: StudentRequest) {
             message: result.message || "No student record was found."
         };
     }
-
-    // -----------------------
-    // Count (Type 1 - 6)
-    // -----------------------
 
     if (["1", "2", "3", "4", "5", "6"].includes(body.Type)) {
 
@@ -79,22 +73,18 @@ export async function getStudent(body: StudentRequest) {
         }
     }
 
-    // -----------------------
-    // List (Type 7 - 12)
-    // -----------------------
-
     if (["7", "8", "9", "10", "11", "12"].includes(body.Type)) {
         const students = Array.isArray(result.data)
             ? result.data
             : [result.data];
-
+      
         const allowedKeys =
             body.fields && body.fields.length > 0
                 ? body.fields
                 : [
                     "Candi_Name",
                     "Father_Name",
-                    "CLASS",
+                    "PreSchlState",
                 ];
 
         const fieldLabels: Record<string, string> = {
