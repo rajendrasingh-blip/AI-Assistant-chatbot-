@@ -13,6 +13,8 @@ export const fetchGeminiChat = async (query: Message,
         const response = await axiosBase.post("/AI/ask", { question: query })
 
         const data = response?.data?.data;
+        console.log(response ,
+            data.length,'res')
         if (!response ||
             !data.length) {
             return { data: "failed to fetch query response from database." }
