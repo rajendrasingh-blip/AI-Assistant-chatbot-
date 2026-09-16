@@ -13,13 +13,10 @@ if (!window.PSEBChatbotLoaded) {
   const script = document.currentScript as HTMLScriptElement | null;
 
   if (script) {
-    const projectId = script.dataset.projectId || "";
-    const collegeCode = script.dataset.collegeCode || "";
+    // const projectId = script.dataset.projectId || "";
+    // const collegeCode = script.dataset.collegeCode || "";
 
-    initChatbot({
-      projectId,
-      collegeCode,
-    });
+    initChatbot();
   }
   // initChatbot({
   //   projectId: "olympiad",

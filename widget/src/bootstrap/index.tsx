@@ -17,7 +17,7 @@ export interface ChatbotConfig {
 
 let root: ReactDOM.Root | null = null;
 
-export function initChatbot(config: ChatbotConfig) {
+export function initChatbot() {
   let host = document.getElementById("pseb-chatbot-root");
 
   if (!host) {
