@@ -97,8 +97,8 @@ export function initChatbot(config: ChatbotConfig) {
 
   root.render(
     <App
-      projectId={config.projectId}
-      collegeCode={config.collegeCode}
+      // projectId={config.projectId}
+      // collegeCode={config.collegeCode}
     />
   );
 }

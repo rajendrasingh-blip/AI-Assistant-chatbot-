@@ -1,18 +1,15 @@
 import Chatbot from "./components/Chatbot";
 
-interface AppProps {
-  projectId: string;
-  collegeCode: string;
-}
+// interface AppProps {
+//   projectId: string;
+//   collegeCode: string;
+// }
 
-export default function App({
-  projectId,
-  collegeCode,
-}: AppProps) {
+export default function App() {
   return (
     <Chatbot
-      projectId={projectId}
-      collegeCode={collegeCode}
+      // projectId={projectId}
+      // collegeCode={collegeCode}
     />
   );
 }
