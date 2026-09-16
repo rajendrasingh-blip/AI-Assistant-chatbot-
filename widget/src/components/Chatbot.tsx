@@ -19,8 +19,8 @@ function ChatbotContent(props: Props) {
     const [question, setQuestion] = useState("");
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
-    const { projectId, collegeCode } = props;
+    // const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
+    // const { projectId, collegeCode } = props;
 
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -52,10 +52,10 @@ function ChatbotContent(props: Props) {
         if (!question.trim() || loading) return;
 
         // College code URL se nahi mila
-        if (!collegeCode) {
-            console.error("College code is missing");
-            return;
-        }
+        // if (!collegeCode) {
+        //     console.error("College code is missing");
+        //     return;
+        // }
 
         const updatedMessages: Message[] = [
             ...messages,
@@ -75,9 +75,9 @@ function ChatbotContent(props: Props) {
         try {
             const answer = await fetchGeminiChat(
                 currentQuery,
-                collegeCode,
-                projectId,
-                searchType
+                // collegeCode,
+                // projectId,
+                // searchType
             );
 
             if (answer?.data) {
@@ -395,7 +395,7 @@ function ChatbotContent(props: Props) {
                                     ×
                                 </button>
                             )}
-                            <div className="relative shrink-0">
+                            {/* <div className="relative shrink-0">
                                 <select
                                     value={searchType || ""}
                                     onChange={(e) => {
@@ -421,7 +421,7 @@ function ChatbotContent(props: Props) {
                                     size={15}
                                     className="pointer-events-none absolute right-1 top-1/3 -translate-y-1/2 text-gray-500"
                                 />
-                            </div>
+                            </div> */}
                             <button
                                 disabled={
                                     loading ||
