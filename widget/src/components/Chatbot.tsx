@@ -1,20 +1,23 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { fetchGeminiChat } from "../api/api";
 import ReactMarkdown from "react-markdown";
-import { X, Send, Bot, ChevronDown } from "lucide-react";
+import {
+    X, Send, Bot,
+    //  ChevronDown 
+} from "lucide-react";
 import remarkGfm from "remark-gfm";
 
-type Props = {
-    collegeCode: string;
-    projectId: string;
-}
+// type Props = {
+//     collegeCode: string;
+//     projectId: string;
+// }
 
 type Message = {
     role: string,
     content: string
 }
 
-function ChatbotContent(props: Props) {
+function ChatbotContent() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [question, setQuestion] = useState("");
     const [loading, setLoading] = useState(false);
@@ -448,10 +451,10 @@ function ChatbotContent(props: Props) {
     );
 }
 
-export default function Chatbot(props: Props) {
+export default function Chatbot() {
     return (
         <Suspense fallback={null}>
-            <ChatbotContent {...props} />
+            <ChatbotContent />
         </Suspense>
     );
 }
