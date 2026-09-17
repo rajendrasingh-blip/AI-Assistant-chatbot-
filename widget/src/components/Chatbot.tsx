@@ -82,7 +82,7 @@ function ChatbotContent() {
                 // projectId,
                 // searchType
             );
-
+            console.log(answer, 'answer')
             if (answer?.data) {
                 setMessages([
                     ...updatedMessages,
@@ -93,6 +93,13 @@ function ChatbotContent() {
                 ]);
             }
         } catch (error) {
+            setMessages([
+                ...updatedMessages,
+                {
+                    role: "assistant",
+                    content: " Please try again after some time.",
+                },
+            ]);
             console.error("Failed to fetch answer:", error);
         } finally {
             setLoading(false);
