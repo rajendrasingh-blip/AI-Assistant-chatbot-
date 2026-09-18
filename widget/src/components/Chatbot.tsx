@@ -4,6 +4,8 @@ import ReactMarkdown from "react-markdown";
 import {
     X, Send, Bot,
     //  ChevronDown 
+    Maximize2,
+    Minimize2,
 } from "lucide-react";
 import remarkGfm from "remark-gfm";
 
@@ -24,6 +26,7 @@ function ChatbotContent() {
     const [isOpen, setIsOpen] = useState(false);
     // const [searchType, setSearchType] = useState<"pdf" | "school" | "pdf-deep-search">("pdf");
     // const { projectId, collegeCode } = props;
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -157,7 +160,13 @@ function ChatbotContent() {
             )}
 
             {isOpen && (
-                <div className="fixed bottom-6 right-6 z-50 flex h-[600px] w-[calc(100vw-32px)] max-w-[430px] flex-col overflow-hidden rounded-2xl border border-[#d8e0e8] bg-white shadow-[0_20px_60px_rgba(15,42,70,0.22)]">
+                <div
+                    className={
+                        isExpanded
+                            ? "fixed left-1/2 top-1/2 z-50 flex h-[85vh] w-[70vw] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-[#d8e0e8] bg-white shadow-[0_20px_60px_rgba(15,42,70,0.25)]"
+                            : "fixed bottom-6 right-6 z-50 flex h-[600px] w-[calc(100vw-32px)] max-w-[430px] flex-col overflow-hidden rounded-2xl border border-[#d8e0e8] bg-white shadow-[0_20px_60px_rgba(15,42,70,0.22)]"
+                    }
+                >
                     <div className="cb-header flex shrink-0 items-center justify-between" >
                         <div className="flex items-center gap-3">
                             <div className="cb-header-icon flex items-center justify-center" >
@@ -182,13 +191,30 @@ function ChatbotContent() {
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => setIsOpen(false)}
-                            aria-label="Close chatbot"
-                            className="cb-close-btn flex items-center justify-center cursor-pointer"
-                        >
-                            <X size={21} />
-                        </button>
+                        <div className="flex items-center gap-1">
+                            <button
+                                onClick={() => setIsExpanded((prev) => !prev)}
+                                aria-label={isExpanded ? "Minimize chatbot" : "Expand chatbot"}
+                                className="cb-close-btn flex items-center justify-center cursor-pointer"
+                            >
+                                {isExpanded ? (
+                                    <Minimize2 size={19} />
+                                ) : (
+                                    <Maximize2 size={19} />
+                                )}
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    setIsExpanded(false);
+                                }}
+                                aria-label="Close chatbot"
+                                className="cb-close-btn flex items-center justify-center cursor-pointer"
+                            >
+                                <X size={21} />
+                            </button>
+                        </div>
                     </div>
 
                     <div
